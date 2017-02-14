@@ -6,7 +6,7 @@ var TodoSearch = React.createClass({
     var showCompleted = this.refs.showCompleted.checked
     var searchText = this.refs.searchText.value
     
-    this.props.onSearch={showCompleted, searchText}
+    this.props.onSearch(showCompleted, searchText)
   },
   
   render: function(){
