@@ -1,7 +1,8 @@
 const React = require('react');
 
 var Todo = React.createClass({
-  render(){
+  
+  render: function(){
     var {id, text} = this.props
     return(
       <div>
