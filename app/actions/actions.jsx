@@ -6,6 +6,12 @@ export var setSearcText = (searchText) => {
   }
 }
 
+export var toggleShowCompleted = () => {
+  return {
+    type: 'TOGGLE_SHOW_COMPLETED'
+  }
+}
+
 export var addTodo = (text) => {
   return {
     type: 'ADD_TODO',
@@ -13,9 +19,10 @@ export var addTodo = (text) => {
   }
 }
 
-export var toggleShowCompleted = () => {
+export var addTodos = (todos) => {
   return {
-    type: 'TOGGLE_SHOW_COMPLETED'
+    type: 'ADD_TODOS',
+    todos
   }
 }
 
