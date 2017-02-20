@@ -1,7 +1,7 @@
 const uuid = require('node-uuid');
 const moment = require('moment');
 
-export var searchTextReducer = (state= '', action) => {
+export var searchTextReducer = (state = '', action) => {
   
   switch (action.type) {
     
@@ -13,7 +13,7 @@ export var searchTextReducer = (state= '', action) => {
   }
 }
 
-export var showCompletedReducer = (state= false, action) => {
+export var showCompletedReducer = (state = false, action) => {
   
   switch (action.type) {
     

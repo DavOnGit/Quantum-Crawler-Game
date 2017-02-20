@@ -13,10 +13,9 @@ export var addTodo = (text) => {
   }
 }
 
-export var toggleShowCompleted = (showCompleted) => {
+export var toggleShowCompleted = () => {
   return {
-    type: 'TOGGLE_SHOW_COMPLETED',
-    showCompleted
+    type: 'TOGGLE_SHOW_COMPLETED'
   }
 }
 
