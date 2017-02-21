@@ -14,7 +14,7 @@ export var TodoSearch = React.createClass({
   
   handleSearch: function(){
     var searchText = this.refs.searchText.value
-    this.props.dispatch(actions.setSearcText(searchText))
+    this.props.dispatch(actions.setSearchText(searchText))
   },
   handleToggleShow: function(){
     this.props.dispatch(actions.toggleShowCompleted())
