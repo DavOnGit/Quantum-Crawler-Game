@@ -8,15 +8,14 @@ const TodoApp = require('TodoApp');
 const actions = require('actions')
 const store = require('configureStore').configure()
 var TodoAPI = require('TodoAPI')
-
+console.log('Start State', store.getState());
 store.subscribe( () => {
   var state = store.getState()
   console.log('New State', state);
-  TodoAPI.setTodos(state.todos)
 })
 
-var initialTodos = TodoAPI.getTodos()
-store.dispatch(actions.addTodos(initialTodos))
+// Fetch todos from firebase
+store.dispatch(actions.startAddTodos())
 
 //load foundation
 $(document).foundation()
