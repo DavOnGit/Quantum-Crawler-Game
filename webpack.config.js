@@ -1,15 +1,15 @@
 var webpack = require('webpack')
 var path = require('path')
-const envFile = require('node-env-file')
+const envFile = require('node-env-file');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 try {
   envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'))
 } catch (e) {
-  console.log('WTF!', e);
+  
 }
-console.log(JSON.stringify(process.env.API_KEY));
+
 module.exports = {
   entry: [
     'script!jquery/dist/jquery.min.js',
@@ -19,18 +19,18 @@ module.exports = {
   externals: {
     jquery: 'jQuery'
   },
-  pugins: [
+  plugins: [
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery'
     }),
     new webpack.optimize.UglifyJsPlugin({
-      'compress': {
-        'warnings': false
+      compressor: {
+        warnings: false
       }
     }),
     new webpack.EnvironmentPlugin(
-      ['NODE_ENV', 'API_KEY', 'AUTH_DOMAIN', 'DATABASE_URL', 'STORAGE_BUCKET', 'MESSAGINGSENDER_ID']
+      ['NODE_ENV', 'API_KEY', 'AUTH_DOMAIN', 'DATABASE_URL' , 'STORAGE_BUCKET', 'MESSAGINGSENDER_ID']
     )
   ],
   output: {
@@ -49,7 +49,7 @@ module.exports = {
       applicationStyles: 'app/styles/app.scss',
       actions: 'app/actions/actions.jsx',
       reducers: 'app/reducers/reducers.jsx',
-      configureStore: 'app/store/configureStore'
+      configureStore: 'app/store/configureStore.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },

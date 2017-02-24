@@ -11,7 +11,7 @@ try {
   console.log(config);
   firebase.initializeApp(config);
 } catch (e) {
-  console.log('WTF2! ', e);
+  
 }
 
 export var firebaseRef = firebase.database().ref()
