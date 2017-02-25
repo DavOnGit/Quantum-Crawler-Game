@@ -19,12 +19,12 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 })
 
-console.log('Start State', store.getState());
+//console.log('Start State', store.getState());
 
-store.subscribe( () => {
-  var state = store.getState()
-  console.log('New State', state);
-})
+// store.subscribe( () => {
+//   var state = store.getState()
+//   console.log('New State', state);
+// })
 
 
 

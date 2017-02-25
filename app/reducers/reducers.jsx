@@ -42,10 +42,12 @@ export var todosReducer = (state = [], action) => {
             ...todo,
             ...action.updates
           }
-        } else {
-          return todo
-        }
+        } else return todo
       })
+      
+    case 'LOGOUT':
+      return []
+      
     default:
       return state
   }
