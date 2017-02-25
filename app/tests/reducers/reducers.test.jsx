@@ -12,7 +12,7 @@ describe('Reducers', () => {
       }
       var res = reducers.searchTextReducer(df(''), df(action))
       
-      expect(res).toEqual(action.searchText)
+      expect(res).toBe(action.searchText)
     })
   })
   
@@ -85,6 +85,30 @@ describe('Reducers', () => {
       expect(res[0].completed).toEqual(updates.completed)
       expect(res[0].completedAt).toEqual(updates.completedAt)
       expect(res[0].text).toEqual(todos[0].text)
+    })
+  })
+  
+  describe('authReducer', () => {
+    it('should store uid on login', () => {
+      var action = {
+        type: 'LOGIN',
+        uid: 'd5y56HTG64Drt'
+      }
+      var res = reducers.authReducer(undefined, df(action))
+      
+      expect(res).toEqual({
+        uid: action.uid
+      })
+    })
+    
+    it('should unset uid to state.auth', () => {
+      const auth = {uid: 'd5y56HTG64Drt'}
+      var action = {
+        type: 'LOGOUT'
+      }
+      var res = reducers.authReducer(df(auth), df(action))
+      
+      expect(res).toEqual({})
     })
   })
 })
