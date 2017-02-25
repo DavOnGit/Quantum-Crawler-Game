@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "set NODE_ENV=test&& karma start",
-    "build": "webpack",
+    "build": "webpack -p",
     "webp": "webpack -w --progress --display-error-details",
     "start": "npm run build && node server.js"
   },
