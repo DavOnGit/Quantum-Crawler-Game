@@ -9,11 +9,11 @@ import firebase from 'app/firebase/'
 import router from 'app/router/'
 
 firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
+  if (user) {                                       console.log('uid:', user.uid);
     store.dispatch(actions.login(user.uid))
     store.dispatch(actions.startAddTodos())         // Fetch todos from firebase
     hashHistory.push('/todos')
-  } else {
+  } else {                                          console.log('no uid', user);
     store.dispatch(actions.logout())
     hashHistory.push('/')
   }

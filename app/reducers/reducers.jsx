@@ -45,6 +45,11 @@ export var todosReducer = (state = [], action) => {
         } else return todo
       })
       
+    case 'DELETE_TODO':
+      return state.filter((todo) => {
+        return todo.id !== action.id
+      })
+      
     case 'LOGOUT':
       return []
       
@@ -63,6 +68,41 @@ export var authReducer = (state = {}, action) => {
       }
       
     case 'LOGOUT':
+      return {}
+      
+    default:
+      return state
+  }
+}
+
+export var confirmReducer = (state = {}, action) => {
+  switch (action.type) {
+    
+    case 'OPEN_MODAL_CONFIRM':
+      return {
+        id: action.id,
+        title: action.title,
+        message: action.message
+      }
+    
+    case 'CLOSE_MODAL_CONFIRM':
+      return {}
+      
+    default:
+      return state
+  }
+}
+
+export var errorReducer = (state = {}, action) => {
+  switch (action.type) {
+    
+    case 'OPEN_MODAL_ERROR':
+      return {
+        title: action.title,
+        message: action.message
+      }
+    
+    case 'CLOSE_MODAL_ERROR':
       return {}
       
     default:
