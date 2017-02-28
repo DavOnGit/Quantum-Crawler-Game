@@ -6,7 +6,7 @@ const actions = require('actions');
 export var Todo = React.createClass({
   
   onToggle(id, completed) {
-    return () => {console.log('Todo actions:', actions);
+    return () => {
       this.props.dispatch(actions.startToggleTodo(id, !completed))
     }
   },
@@ -43,7 +43,7 @@ export var Todo = React.createClass({
           <p className='todo__subtext'>{renderDate()}</p>
         </div>
         <div>
-          <button class="close-button" onClick={this.onWipe(id)} aria-label="Delete todo" type="button">
+          <button className="close-butt" onClick={this.onWipe(id)} aria-label="Delete todo" type="button">
             <span aria-hidden="true">&times;</span>
           </button>
           {/* <p className='wipeTodo' onClick={this.onWipe(id)}>&#215;</p> */}

@@ -135,7 +135,7 @@ export var closeModalError = () => {
   }
 }
 
-export var login = (uid) => {
+export var login = (uid) => {console.log('action login:', uid);
   return {
     type: 'LOGIN',
     uid

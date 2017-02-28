@@ -18,7 +18,7 @@ export var Login = React.createClass({
       if (typeof error.message === 'string') {
         return <ModalError message={error.message} title={error.title}/>
       }
-    };console.log(this.props.error);
+    };
     return(
       <div>
         <h1 className='page-title'>Your Todos App :)</h1>

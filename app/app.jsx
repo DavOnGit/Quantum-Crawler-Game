@@ -1,23 +1,14 @@
-var React = require('react')
-var ReactDOM = require('react-dom')
-var {Provider} = require('react-redux')
-var {hashHistory} = require('react-router')
+import React, { PropTypes } from 'react';
+import { Provider } from 'react-redux';
 
-const actions = require('actions')
-const store = require('configureStore').configure()
-import firebase from 'app/firebase/'
+
+
+//const store = require('configureStore').configure()
+
 import router from 'app/router/'
+import DevTools from 'DevTools';
 
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {                                       console.log('uid:', user.uid);
-    store.dispatch(actions.login(user.uid))
-    store.dispatch(actions.startAddTodos())         // Fetch todos from firebase
-    hashHistory.push('/todos')
-  } else {                                          console.log('no uid', user);
-    store.dispatch(actions.logout())
-    hashHistory.push('/')
-  }
-})
+
 
 //console.log('Start State', store.getState());
 
@@ -32,9 +23,24 @@ $(document).foundation()                        //load foundation
 
 require('style!css!sass!applicationStyles')     // Import styles
 
-ReactDOM.render(
-  <Provider store={store}>
-    {router}
-  </Provider>,
-  document.getElementById('app')
-)
+const App = (props) => (
+  <Provider store={props.store}>
+    <div>
+      {router}
+      <DevTools />
+    </div>
+  </Provider>
+);
+
+App.propTypes = {
+  store: PropTypes.object.isRequired
+};
+
+export default App;
+
+// ReactDOM.render(
+//   <Provider store={store}>
+//     {router}
+//   </Provider>,
+//   document.getElementById('app')
+// )

@@ -1,5 +1,5 @@
-var webpack = require('webpack')
-var path = require('path')
+const path = require('path')
+const webpack = require('webpack')
 const envFile = require('node-env-file');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
@@ -11,32 +11,37 @@ try {
 }
 
 module.exports = {
+  debug: true,
   entry: [
+    'webpack-hot-middleware/client',
     'script!jquery/dist/jquery.min.js',
     'script!foundation-sites/dist/foundation.min.js',
-    './app/app.jsx'
+    './app/root.jsx'
   ],
+  output: {
+    path: path.join(__dirname, 'public'),
+    filename: 'bundle.js',
+    publicPath: '/static/'
+  },
   externals: {
     jquery: 'jQuery'
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery'
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compressor: {
+    //     warnings: false
+    //   }
+    // }),
     new webpack.EnvironmentPlugin(
       ['NODE_ENV', 'API_KEY', 'AUTH_DOMAIN', 'DATABASE_URL' , 'STORAGE_BUCKET', 'MESSAGINGSENDER_ID']
     )
   ],
-  output: {
-    path: __dirname,
-    filename: './public/bundle.js'
-  },
   resolve: {
     root: __dirname,
     modulesDirectories: [
@@ -54,12 +59,12 @@ module.exports = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
+    preLoaders: [
+      { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ }
+    ],
     loaders: [
       {
-        loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015', 'stage-0']
-        },
+        loaders: ['babel'],
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/
       }
