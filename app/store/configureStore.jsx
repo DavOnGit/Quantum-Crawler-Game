@@ -1,35 +1,11 @@
-import * as redux from 'redux'
-import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
+// export devtools and logger only in dev mode
 
-import {searchTextReducer, showCompletedReducer, todosReducer, authReducer, confirmReducer, errorReducer} from 'reducers'
-import DevTools from 'DevTools';
+let loadedStore = null;
 
-const logger = createLogger({diff: true});
-
-export var configure = (initialState = {}) => {
-  var reducer = redux.combineReducers({
-    searchText: searchTextReducer,
-    showCompleted: showCompletedReducer,
-    todos: todosReducer,
-    auth: authReducer,
-    confirm: confirmReducer,
-    error: errorReducer
-  })
-  
-  var store = redux.createStore(reducer, initialState,
-    redux.compose(
-      redux.applyMiddleware(thunk, logger),
-      DevTools.instrument()
-      //window.devToolsExtension ? window.devToolsExtension() : f => f
-    )
-  )
-  
-  if (module.hot) {
-    module.hot.accept('reducers', () =>
-      store.replaceReducer(require('reducers'))
-    );
-  }
-  
-  return store
+if (process.env.NODE_ENV === 'production') {
+  loadedStore = require('./configureStore.prod').default
+} else {
+  loadedStore = require('./configureStore.dev').default
 }
+
+export const configureStore = loadedStore;

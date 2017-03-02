@@ -6,8 +6,7 @@
 @include foundation-everything;
 
 // Components
-@import "components/callout-auth";
-@import "components/container";
-@import "components/page-actions";
-@import "components/page-title";
-@import "components/todo";
+@import "components/app";
+@import "components/home";
+@import "components/footer";
+@import "components/counter";
