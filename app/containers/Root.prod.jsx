@@ -1,3 +1,4 @@
+//# sourceURL=source.Rootprod
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 

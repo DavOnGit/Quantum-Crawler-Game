@@ -15,6 +15,7 @@ body {
 .main-app-nav {
   font-size: 2em;
   text-align: center;
+  margin-bottom: 10px;
 
   a {
     text-decoration: none;
@@ -22,7 +23,7 @@ body {
     font-size: 1.2rem;
     padding: 0 10px 5px 10px;
     &:hover {
-      color: $smort-cyan;
+      color: $smort-blue;
     }
     &.active {
       border-bottom: 1px solid $accent-blue;

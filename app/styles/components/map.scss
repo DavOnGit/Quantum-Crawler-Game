@@ -1,0 +1,21 @@
+
+
+.map-row {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.map-tyle {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  
+  &.type0 {
+    background-color: $accent-blue;
+  }
+  
+  &.type1 {
+    background-color: $main-bg-color;
+  }
+}

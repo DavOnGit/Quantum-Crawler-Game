@@ -3,11 +3,13 @@ import { routeReducer } from 'react-router-redux'
 import { combineReducers } from 'redux'
 import undoable from 'redux-undo'
 
-import counter from './counter'
+import {mapReducer} from './mapReducer'
 
 const rootReducer = combineReducers({
-  counter: undoable(counter, {limit: 50}),
+  map: mapReducer,
+  
   routing: routeReducer // add routeReducer as a prop on state
+  //counter: undoable(counter, {limit: 50}),
 });
 
 export default rootReducer

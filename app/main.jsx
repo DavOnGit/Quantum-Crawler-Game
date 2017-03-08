@@ -1,10 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import { configureStore } from 'configureStore';
+import { configureStore } from 'configureStore'
+import mapGenerator from 'mapGen'
 
-const store = configureStore();
 const rootEl = document.getElementById('app')
+const initialState = {
+  map: mapGenerator(),
+  player: {
+    score: 0
+  },
+  darkness: false
+}
+const store = configureStore(initialState);
 
 // necessary for hot reloading
 let render = () => {
@@ -15,9 +23,9 @@ let render = () => {
   )
 }
 
-if(module.hot) {
+if (module.hot) {
   const renderApp = render
-  
+
   const renderError = (error) => {
     const RedBox = require('redbox-react')
     ReactDOM.render(

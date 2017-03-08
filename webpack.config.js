@@ -11,10 +11,11 @@ try {
 }
 
 module.exports = {
-  debug: true,
+  //debug: true,
   entry: [
     'webpack-hot-middleware/client',
     'script!jquery/dist/jquery.min.js',
+    'script!underscore/underscore-min.js',
     'script!foundation-sites/dist/foundation.min.js',
     './app/main.jsx'
   ],
@@ -24,13 +25,14 @@ module.exports = {
     publicPath: '/public/'
   },
   externals: {
-    jquery: 'jQuery'
+    jquery: 'jQuery',
+    underscore: '_'
   },
   plugins: process.env.NODE_ENV === 'development' ? [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery'}),
+    new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'}),
   ] : [
-    new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery'}),
+    new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'}),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
@@ -42,6 +44,8 @@ module.exports = {
     root: __dirname,
     modulesDirectories: [
       'node_modules',
+      './app/api',
+      './app/lib',
       './app/components',
       './app/containers',
       './app/constants',

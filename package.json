@@ -5,21 +5,23 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DavOnGit/react-ud-todo-app"
+    "url": ""
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test&& karma start",
+    "test": "cross-env NODE_ENV=test karma start",
     "build": "webpack -p",
     "webp": "webpack -w --progress --display-error-details",
-    "start": "cross-env NODE_ENV=production && npm run build && node serverProd.js",
-    "dev": "node server.js"
+    "start": "cross-env NODE_ENV=production npm run build && node serverProd.js",
+    "dev": "cross-env NODE_ENV=development webpack && cross-env NODE_ENV=development node server.js"
   },
   "author": "Davide G. Vozzi <davide.vozzi@gmail.com> (https://github.com/DavOnGit)",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.9.1",
     "babel-core": "^6.5.1",
+    "babel-eslint": "7.1.1",
     "babel-loader": "^6.2.2",
+    "babel-plugin-transform-class-properties": "6.23.0",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -27,8 +29,12 @@
     "css-loader": "^0.23.1",
     "deep-freeze-strict": "^1.1.1",
     "eslint": "3.16.1",
+    "eslint-config-standard": "7.0.0",
     "eslint-loader": "1.6.3",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-promise": "3.5.0",
     "eslint-plugin-react": "6.10.0",
+    "eslint-plugin-standard": "2.1.1",
     "expect": "^1.14.0",
     "express": "^4.13.4",
     "firebase": "^3.0.2",
@@ -54,12 +60,12 @@
     "sass-loader": "^3.1.2",
     "script-loader": "^0.6.1",
     "style-loader": "^0.13.0",
+    "underscore": "1.8.3",
     "webpack": "^1.12.13",
     "webpack-dev-middleware": "1.10.1",
     "webpack-hot-middleware": "2.17.1"
   },
   "devDependencies": {
-    "babel-eslint": "7.1.1",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.2",
     "karma-mocha": "^0.2.2",

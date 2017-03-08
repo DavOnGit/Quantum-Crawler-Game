@@ -1,0 +1,11 @@
+.dungeon, .dungeon::before, .dungeon::after {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: content-box;
+}
+
+.dungeon {
+  height: 420px;
+  width: 420px;
+  border: 1px solid $smort-blue;
+}

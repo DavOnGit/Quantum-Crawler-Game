@@ -1,21 +1,10 @@
+//# sourceURL=source.Rootdev
+
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 
 import Router from 'app/router/'
 import DevTools from 'DevTools';
-
-
-
-//console.log('Start State', store.getState());
-
-// store.subscribe( () => {
-//   var state = store.getState()
-//   console.log('New State', state);
-// })
-
-
-
-//$(document).foundation()                        //load foundation
 
 require('style!css!sass!applicationStyles')     // Import styles
 

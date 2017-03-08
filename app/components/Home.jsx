@@ -1,8 +1,11 @@
-import React from 'react';
-import Counter from 'Counter';
+import React from 'react'
 
-export default () => (
-  <div className="view-container">
-    <Counter />
-  </div>
-);
+import Dungeon from 'Dungeon'
+
+export default function Home () {
+  return (
+    <div className="view-container">
+      <Dungeon />
+    </div>
+  )
+}
