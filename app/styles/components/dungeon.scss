@@ -5,6 +5,8 @@
 }
 
 .dungeon {
+  display: flex;
+  flex-direction: column;
   height: 420px;
   width: 420px;
   border: 1px solid $smort-blue;

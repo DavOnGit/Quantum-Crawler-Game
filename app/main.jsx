@@ -12,7 +12,7 @@ const initialState = {
   },
   darkness: false
 }
-const store = configureStore(initialState);
+const store = configureStore(initialState)
 
 // necessary for hot reloading
 let render = () => {

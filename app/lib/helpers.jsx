@@ -8,13 +8,33 @@ export const _compose = (f, i) => {
 }
 
 /* Draw rectangle */
-export const _drawRect = (arr, loc) => {
+export const _drawRect = (arr, loc, type) => {
   let {x, y, spanX = 1, spanY = 1} = loc
   return arr.map((row, i) => {
     if (i >= y && i < y + spanY) {
       return row.map((el, j) => {
-        if (j >= x && j < x + spanX) return 1
-        else return el
+        if (j >= x && j < x + spanX) {
+          return {
+            ...el,
+            type
+          }
+        } else return el
+      })
+    } else return row
+  })
+}
+
+/* Draw point */
+export function drawPoint (arr, x, y, type) {
+  return arr.map((row, i) => {
+    if (i === y) {
+      return row.map((el, j) => {
+        if (j === x) {
+          return {
+            ...el,
+            type
+          }
+        } else return el
       })
     } else return row
   })

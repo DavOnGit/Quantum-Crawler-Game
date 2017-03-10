@@ -2,20 +2,38 @@
 
 .map-row {
   display: flex;
-  margin: 0;
-  padding: 0;
 }
 
 .map-tyle {
+  flex: 1 1 10px;
   width: 14px;
   height: 14px;
-  padding: 0;
   
-  &.type0 {
+  &.wall {
     background-color: $accent-blue;
   }
   
-  &.type1 {
+  &.floor {
     background-color: $main-bg-color;
+  }
+  
+  &.door {
+    background-color: $main-bg-color;
+  }
+  
+  &.foe {
+    background-color: $accent-orange;
+  }
+  
+  &.heart {
+    background-color: $accent-green;
+  }
+  
+  &.player {
+    background-color: $deep-blue;
+  }
+  
+  &.weapon {
+    background-color: $smort-yellow;
   }
 }
