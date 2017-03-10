@@ -8,13 +8,14 @@ const rootEl = document.getElementById('app')
 const initialState = {
   map: mapGenerator(),
   player: {
+    position: {},
     score: 0
   },
   darkness: false
 }
 const store = configureStore(initialState)
 
-// necessary for hot reloading
+// hot reloading
 let render = () => {
   const Root = require('Root').default
   ReactDOM.render(

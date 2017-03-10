@@ -2,12 +2,13 @@ import {random} from 'helpers'
 
 /* Map Geenerator */
 export const mapSettings = {
-  level: 1,
+  level: 4,
+  finalLvl: 4,
   width: 30,
   height: 30,
-  rooms: 10,
+  rooms: 8,
   minRsize: 5,
-  maxRsize: 10,
+  maxRsize: 9,
   gap: 1    // Used as spacer, margin
 }
 
@@ -25,21 +26,31 @@ export const DOOR = {
 }
 export const HEART = {
   name: 'heart',
-  life: 0
+  life: 0,
+  heal: 40
 }
 export const PLAYER = {
   name: 'player',
   life: 100,
-  attack: 5,
+  dmg: 5,
   exp: 0,
   lvl: 1
+}
+export const BOSS = {
+  name: 'boss',
+  life: 400,
+  dmg: 50
+}
+export const LVL_DOOR = {
+  name: 'lvl-door',
+  life: 0
 }
 export const FOE = (gameLevel) => {
   return {
     name: 'foe',
     lvl: gameLevel,
     life: 20 + (20 * gameLevel),
-    attack: 5 + (15 * gameLevel)
+    dmg: 5 + (15 * gameLevel)
   }
 }
 export const WEAPON = (gameLevel) => {
@@ -54,10 +65,10 @@ export const WEAPON = (gameLevel) => {
 export const ITEMS_N = (gameLevel, type) => {
   switch (type) {
     case 'FOE':
-      return random(gameLevel + 3)
+      return random(gameLevel + 1) + 1
     case 'HEART':
       return random(3)
     default:
-      throw('error: Items not match')
+      throw ('error: Items not match')
   }
 }
