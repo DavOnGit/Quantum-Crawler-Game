@@ -18,7 +18,7 @@ export default (settings = mapSettings) => {
 
   const firstRoom = makeFirstRoom(arr2D, width, height, minRsize, maxRsize, gap)  // draw first room
 
-  const roomWplayer = drawItem({map: firstRoom.map, loc: firstRoom.loc, type: PLAYER}) // place player
+  const roomWplayer = drawItem({map: firstRoom.map, loc: firstRoom.loc, type: {name: 'player'}}) // place player
 
   const mapWrooms = _compose(makeNewRoom, rooms - 1)(roomWplayer.map)  // draw all other rooms and objects
 
@@ -30,8 +30,8 @@ export default (settings = mapSettings) => {
 
   const weaponLess = wallLess.filter(el => (el.type.name === 'floor'))
 
-  const randLvlDoor = random(weaponLess.length)
-  const lvlDoorLoc = weaponLess[randLvlDoor].coords
+  const lvlDoor = random(weaponLess.length)
+  const lvlDoorLoc = weaponLess[lvlDoor].coords
 
   if (level === finalLvl) {
     const mapWlvlDoor = _drawRect(mapWeapon, lvlDoorLoc, LVL_DOOR)  // place next level Door
@@ -70,7 +70,7 @@ export default (settings = mapSettings) => {
         const mapWfoe = mapWfoeObj.map
 
         const heartNum = ITEMS_N(level, 'HEART')  // down here we place all the hearts
-        const mapWheart = heartNum ? _compose(drawItem, heartNum)({map: mapWfoe, loc, type: HEART})
+        const mapWheart = heartNum ? _compose(drawItem, heartNum)({map: mapWfoe, loc, type: HEART(level)})
           : {map: mapWfoe}
 
         return mapWheart.map

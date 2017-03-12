@@ -24,22 +24,6 @@ export const _drawRect = (arr, loc, type) => {
   })
 }
 
-/* Draw point */
-export function drawPoint (arr, x, y, type) {
-  return arr.map((row, i) => {
-    if (i === y) {
-      return row.map((el, j) => {
-        if (j === x) {
-          return {
-            ...el,
-            type
-          }
-        } else return el
-      })
-    } else return row
-  })
-}
-
 export const random = (start, end) => {
   if (isNaN(end)) {
     end = start

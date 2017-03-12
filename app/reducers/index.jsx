@@ -1,11 +1,12 @@
 /* RouteReducer captures routes as state */
-import { routeReducer } from 'react-router-redux'
 import { combineReducers } from 'redux'
+import { routeReducer } from 'react-router-redux'
 import undoable from 'redux-undo'
 
-import {mapReducer, playerReducer, darknessReducer} from './mapReducer'
+import {gameLvlReducer, mapReducer, playerReducer, darknessReducer} from './mapReducer'
 
 const rootReducer = combineReducers({
+  gameLvl: gameLvlReducer,
   map: mapReducer,
   player: playerReducer,
   darkness: darknessReducer,

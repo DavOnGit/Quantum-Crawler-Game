@@ -1,15 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import _ from 'underscore'
 
 import { configureStore } from 'configureStore'
 import mapGenerator from 'mapGen'
+import { PLAYER } from 'settings'
 
 const rootEl = document.getElementById('app')
+
+const map = mapGenerator()
+const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
+
 const initialState = {
-  map: mapGenerator(),
+  map: map,
   player: {
-    position: {},
-    score: 0
+    ...PLAYER(),
+    position: {...playerPos}
   },
   darkness: false
 }
