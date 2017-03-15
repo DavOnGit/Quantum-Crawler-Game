@@ -2,6 +2,23 @@ import { INCREMENT_COUNTER } from 'ActionTypes'
 import { FLOOR } from 'settings'
 import {_drawRect} from 'helpers'
 
+export const screenReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_WINDOW_DIM':
+      return {
+        ...state,
+        dim: action.dim
+      }
+    case 'SCROLL':
+      return {
+        ...state,
+        scroll: action.pos
+      }
+    default:
+      return state
+  }
+}
+
 export var gameLvlReducer = (state = 1, action) => {
   switch (action.type) {
     case 'SET_GAME_LVL':
@@ -19,6 +36,8 @@ export var mapReducer = (state = [], action) => {
       let newPlayerPos = _drawRect(oldPlayerPos, action.dest, {name: 'player'})
       return newPlayerPos
     }
+    case 'SET_FOE':
+      return _drawRect(state, action.loc, action.foe)
     case 'MAP_NEXT_LVL': {
       return action.map
     }
@@ -40,41 +59,22 @@ export var playerReducer = (state = {}, action) => {
         wName: action.wName,
         dmg: action.dmg
       }
-    case 'SET_LIFE':
+    case 'SET_PLAYER_LIFE':
       return {
         ...state,
         life: action.life
       }
-    case 'LEFT':
+    case 'SET_PLAYER_EXP':
+      return {
+        ...state,
+        exp: action.exp
+      }
+    case 'MOVE':
       return {
         ...state,
         position: {
           x: action.dest.x,
           y: action.dest.y
-        }
-      }
-    case 'RIGHT':
-      return {
-        ...state,
-        position: {
-          x: state.position.x + 1,
-          y: state.position.y
-        }
-      }
-    case 'UP':
-      return {
-        ...state,
-        position: {
-          x: state.position.x,
-          y: state.position.y - 1
-        }
-      }
-    case 'DOWN':
-      return {
-        ...state,
-        position: {
-          x: state.position.x,
-          y: state.position.y + 1
         }
       }
     default:

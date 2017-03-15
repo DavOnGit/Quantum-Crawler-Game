@@ -1,7 +1,6 @@
-//# sourceURL=source.App
-import React, { PropTypes } from 'react';
-import { IndexLink } from 'react-router';
-import Footer from 'Footer';
+import React, { PropTypes } from 'react'
+import { IndexLink } from 'react-router'
+import Footer from 'Footer'
 
 const App = (props) => (
   <div className="main-app-container">
@@ -10,6 +9,7 @@ const App = (props) => (
       <div>
         <span><IndexLink to="/" activeClassName="active">Home</IndexLink></span>
         <span><IndexLink to="/page2" activeClassName="active">Page2</IndexLink></span>
+        <span><IndexLink to="/game" activeClassName="active">Game</IndexLink></span>
       </div>
     </div>
     <div>
@@ -22,10 +22,10 @@ const App = (props) => (
     </div>
     <Footer />
   </div>
-);
+)
 
 App.propTypes = {
   children: PropTypes.element.isRequired
-};
+}
 
-export default App;
+export default App

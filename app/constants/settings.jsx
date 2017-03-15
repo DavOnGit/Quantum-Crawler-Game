@@ -4,11 +4,11 @@ import {random} from 'helpers'
 export const mapSettings = {
   level: 1,
   finalLvl: 4,
-  width: 30,      // Map dimensions
-  height: 30,
-  rooms: 8,
-  minRsize: 5,   // Room dimensions
-  maxRsize: 9,
+  width: 100,      // Map dimensions
+  height: 100,
+  rooms: 28,
+  minRsize: 6,   // Room dimensions
+  maxRsize: 20,
   gap: 1        // Used as spacer, margin
 }
 
@@ -58,7 +58,8 @@ export const FOE = (gameLevel) => {
     name: 'foe',
     lvl: gameLevel,
     life: 20 + (20 * gameLevel),
-    dmg: 5 + (15 * gameLevel)
+    dmg: 5 + (15 * gameLevel),
+    exp: gameLevel * 10
   }
 }
 export const WEAPON = (gameLevel) => {

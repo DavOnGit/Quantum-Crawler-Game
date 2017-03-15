@@ -1,10 +1,10 @@
 //# sourceURL=source.Rootdev
 
-import React, { PropTypes } from 'react';
-import { Provider } from 'react-redux';
+import React, { PropTypes } from 'react'
+import { Provider } from 'react-redux'
 
 import Router from 'app/router/'
-import DevTools from 'DevTools';
+import DevTools from 'DevTools'
 
 require('style!css!sass!applicationStyles')     // Import styles
 
@@ -15,10 +15,10 @@ const App = (props) => (
       <DevTools />
     </div>
   </Provider>
-);
+)
 
 App.propTypes = {
   store: PropTypes.object.isRequired
-};
+}
 
-export default App;
+export default App

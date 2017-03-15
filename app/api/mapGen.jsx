@@ -30,19 +30,17 @@ export default (settings = mapSettings) => {
 
   const weaponLess = wallLess.filter(el => (el.type.name === 'floor'))
 
-  const lvlDoor = random(weaponLess.length)
-  const lvlDoorLoc = weaponLess[lvlDoor].coords
-
   if (level === finalLvl) {
-    const mapWlvlDoor = _drawRect(mapWeapon, lvlDoorLoc, LVL_DOOR)  // place next level Door
+    const randBoss = random(weaponLess.length)
+    const bossLoc = weaponLess[randBoss].coords
 
-    const lvlDoorLess = weaponLess.filter(el => (el.type.name === 'floor'))
+    return _drawRect(mapWeapon, bossLoc, BOSS)  // place next Boss
+  } else {
+    const lvlDoor = random(weaponLess.length)
+    const lvlDoorLoc = weaponLess[lvlDoor].coords
 
-    const randBoss = random(lvlDoorLess.length)
-    const bossLoc = lvlDoorLess[randBoss].coords
-
-    return _drawRect(mapWlvlDoor, bossLoc, BOSS)  // place next level Door
-  } else return _drawRect(mapWeapon, lvlDoorLoc, LVL_DOOR)   // place next level Door
+    return _drawRect(mapWeapon, lvlDoorLoc, LVL_DOOR)      // place next level Door
+  }
 
   /* Recursively make new rooms and place objects */
   function makeNewRoom (map) {
@@ -63,9 +61,8 @@ export default (settings = mapSettings) => {
 
         const mapWroom = _drawRect(addDoor, loc, FLOOR)   // place room
 
-        const foeByLvl = FOE(level)
         const foeNum = ITEMS_N(level, 'FOE')      // down here we place all the enemies
-        const mapWfoeObj = foeNum ? _compose(drawItem, foeNum)({map: mapWroom, loc, type: foeByLvl})
+        const mapWfoeObj = foeNum ? _compose(drawItem, foeNum)({map: mapWroom, loc, type: FOE(level)})
           : {map: mapWroom}
         const mapWfoe = mapWfoeObj.map
 
@@ -172,10 +169,10 @@ function setRoomCoord (tile, minRsize, maxRsize) {
 function checkDim (map, loc, gap) {
   const {x, y, spanX, spanY} = loc
   const roomDimOk =
-    (y < gap) ? false : (y > map.length - gap) ? false
-  : (x < gap) ? false : (x > map[0].length - gap) ? false
-  : (y + spanY > map[0].length - gap) ? false
-  : !(x + spanX > map[0].length - gap)
+    (y < gap) ? false : (y > map.length - 1 - gap) ? false
+  : (x < gap) ? false : (x > map[0].length - 1 - gap) ? false
+  : (y + spanY > map.length - 1 - gap) ? false
+  : !(x + spanX > map[0].length - 1 - gap)
   return roomDimOk
 }
 

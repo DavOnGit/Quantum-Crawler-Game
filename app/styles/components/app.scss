@@ -1,11 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:100,400);
 
-body {
+//html { height: 100%; overflow:auto; }
+
+body {//height: 100%;
   background-color: $main-bg-color;
   color: $accent-black;
   display: flex;
   justify-content: center;
   font-family: 'Raleway', sans-serif;
+  overflow: hidden;
+  
+  &.no-justify {
+    justify-content: flex-start;
+  }
+  &.align {
+    align-items: center;
+  }
 }
 
 .main-app-container {
@@ -29,4 +39,8 @@ body {
       border-bottom: 1px solid $accent-blue;
     }
   }
+}
+
+.view-container {
+  
 }

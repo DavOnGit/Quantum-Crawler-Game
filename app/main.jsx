@@ -17,7 +17,11 @@ const initialState = {
     ...PLAYER(),
     position: {...playerPos}
   },
-  darkness: false
+  darkness: false,
+  screen: {
+    dim: {x: window.innerWidth, y: window.innerHeight},
+    scroll: {x: 0, y: 0}
+  }
 }
 const store = configureStore(initialState)
 

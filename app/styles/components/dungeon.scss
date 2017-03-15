@@ -1,3 +1,4 @@
+
 .dungeon, .dungeon::before, .dungeon::after {
   margin: 0 !important;
   padding: 0 !important;
@@ -7,7 +8,8 @@
 .dungeon {
   display: flex;
   flex-direction: column;
-  height: 420px;
-  width: 420px;
+  // height: 1600px;
+  // width: 600px;
   border: 1px solid $smort-blue;
+  //overflow: scroll;
 }
