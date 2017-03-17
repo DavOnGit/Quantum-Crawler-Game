@@ -6,7 +6,7 @@ export const mapSettings = {
   finalLvl: 4,
   width: 100,      // Map dimensions
   height: 100,
-  rooms: 28,
+  rooms: 8,
   minRsize: 6,   // Room dimensions
   maxRsize: 20,
   gap: 1        // Used as spacer, margin
@@ -33,15 +33,16 @@ export const LVL_DOOR = {
   name: 'lvl-door',
   life: 0
 }
-export const PLAYER = (playerLevel = 1) => {
+export const PLAYER = (playerLevel = 1, weapon = 'stick') => {
   return {
     name: 'player',
     lvl: playerLevel,
-    wName: 'stick',
-    maxLife: 60 + (playerLevel * 40),
+    wName: weapon,
+    maxLife: 70 + (playerLevel * 30),
     life: 100,
-    dmg: -5 + (playerLevel + 10),
-    exp: 0
+    dmg: playerLevel + 10,
+    exp: 0,
+    nextLvl: 70 + (playerLevel * 30)
   }
 }
 export const HEART = (gameLevel) => {
@@ -57,13 +58,13 @@ export const FOE = (gameLevel) => {
   return {
     name: 'foe',
     lvl: gameLevel,
-    life: 20 + (20 * gameLevel),
-    dmg: 5 + (15 * gameLevel),
+    life: 20 + (30 * gameLevel),
+    dmg: 15 * gameLevel,
     exp: gameLevel * 10
   }
 }
 export const WEAPON = (gameLevel) => {
-  const wName = ['Knife', 'Rusty Sword', 'Long Sword', 'War Axe']
+  const wName = ['stick', 'knife', 'sword', 'axe']
   return {
     name: 'weapon',
     wName: wName[gameLevel],

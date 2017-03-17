@@ -1,17 +1,17 @@
 const path = require('path')
 const webpack = require('webpack')
-const envFile = require('node-env-file');
+const envFile = require('node-env-file')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-console.log(process.env.NODE_ENV);
+console.log(process.env.NODE_ENV)
 try {
   envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'))
 } catch (e) {
-  
+
 }
 
 module.exports = {
-  //debug: true,
+  // debug: true,
   entry: [
     'webpack-hot-middleware/client',
     'script!jquery/dist/jquery.min.js',
@@ -30,13 +30,13 @@ module.exports = {
   },
   plugins: process.env.NODE_ENV === 'development' ? [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'}),
+    new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'})
   ] : [
     new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'}),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-        compressor: {warnings: false, drop_console: true, drop_debugger: true},
+      compressor: {warnings: false, drop_console: true, drop_debugger: true},
       output: {ascii_only: true, comments: false}
     })
   ],

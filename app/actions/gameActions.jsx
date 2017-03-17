@@ -1,7 +1,7 @@
 import _ from 'underscore'
 
 import mapGenerator from 'mapGen'
-import { mapSettings } from 'settings'
+import { mapSettings, PLAYER } from 'settings'
 
 export function move (playerPos, dest) {
   return {
@@ -50,10 +50,32 @@ export function setPlayerLife (life) {
   }
 }
 
-export function setPlayerExp (exp) {
+export function setPlayerExp (nextLvl, exp) {
   return {
     type: 'SET_PLAYER_EXP',
+    nextLvl,
     exp
+  }
+}
+
+export function setPlayerPos (position) {
+  return {
+    type: 'SET_PLAYER_POS',
+    position
+  }
+}
+
+export function setPlayerLvl (level) {
+  return {
+    type: 'SET_PLAYER_LVL',
+    level
+  }
+}
+
+export function resetPlayer (player) {
+  return {
+    type: 'RESET_PLAYER',
+    player
   }
 }
 
@@ -73,17 +95,10 @@ export function setFoe (foe, loc) {
   }
 }
 
-export function nextLvlMap (map) {
+export function setMap (map) {
   return {
     type: 'MAP_NEXT_LVL',
     map
-  }
-}
-
-export function setPlayerPos (position) {
-  return {
-    type: 'SET_PLAYER_POS',
-    position
   }
 }
 
@@ -100,13 +115,6 @@ export function gameOver () {
   }
 }
 
-// export function setWindowDim (dim) {
-//   return {
-//     type: 'SET_WINDOW_DIM',
-//     dim
-//   }
-// }
-
 export function wScroll (pos) {
   return {
     type: 'SCROLL',
@@ -117,7 +125,7 @@ export function wScroll (pos) {
 export function preMove (dest, dir) {
   return (dispatch, getState) => {
     const { gameLvl, map, player, screen } = getState()
-    const canIgo = checkMove(gameLvl, map, player, dest, dispatch)
+    const canIgo = checkMove(gameLvl, map, player, dest, screen, dispatch)
 
     const go = canIgo ? dispatch(move(player.position, dest))
       : null
@@ -159,7 +167,7 @@ function handleViewport (dest, screen, dir, dispatch) {
   }
 }
 
-function checkMove (gameLvl, map, player, dest, dispatch) {
+function checkMove (gameLvl, map, player, dest, screen, dispatch) {
   const x = dest.x
   const y = dest.y
   const cellName = map[y][x].type.name
@@ -176,31 +184,47 @@ function checkMove (gameLvl, map, player, dest, dispatch) {
     return dispatch(getWeapon(wName, dmg))
   }
   if (cellName === 'lvl-door') {
-    const settings = {...mapSettings, level: gameLvl + 1}
-    const map = mapGenerator(settings)
-    const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
-    dispatch(nextLvlMap(map))
-    dispatch(setPlayerPos(playerPos))
-    dispatch(setGameLvl(gameLvl + 1))
+    makeNewMap(gameLvl + 1, screen, dispatch)
     return false
   }
-  if (cellName === 'foe') {
+  if (cellName === 'foe' || cellName === 'boss') {
     const foeDmg = map[y][x].type.dmg
     const foeLife = map[y][x].type.life
     const playerLife = player.life - foeDmg
     if (playerLife <= 0) {
-      dispatch(gameOver())
+      window.alert('U loose :(')
+      makeNewMap(1, screen, dispatch)
+      dispatch(resetPlayer(PLAYER()))
       return false
     }
     dispatch(setPlayerLife(playerLife))
     const foeNewLife = foeLife - player.dmg
+    if (cellName === 'boss' && foeNewLife <= 0) return dispatch(youWin())
     if (foeNewLife <= 0) {
-      const playerExp = player.exp + map[y][x].type.exp
-      dispatch(setPlayerExp(playerExp))
+      const exp = map[y][x].type.exp
+      const nextLvl = player.nextLvl - exp
+      if (nextLvl > 0) return dispatch(setPlayerExp(nextLvl, player.exp + exp))
+      const newNextLvl = ((player.lvl + 1) * 30) + 70
+      dispatch(setPlayerLvl(player.lvl + 1))
+      dispatch(setPlayerExp(newNextLvl + nextLvl, -nextLvl))
       return true
     }
     dispatch(setFoe({...map[y][x].type, life: foeNewLife}, {x, y}))
     return false
   }
   return false
+}
+
+function makeNewMap (level, screen, dispatch) {
+  const settings = {...mapSettings, level: level}
+  const map = mapGenerator(settings)
+  const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
+  console.log(playerPos, screen)
+  const offsetX = ((playerPos.x + 1) * 20) - (screen.dim.x / 2)
+  const offsetY = ((playerPos.y + 1) * 20) - (screen.dim.y / 2)
+  window.scroll(offsetX, offsetY)
+  dispatch(setMap(map))
+  dispatch(setPlayerPos(playerPos))
+  dispatch(setGameLvl(level))
+  dispatch(wScroll({x: offsetX, y: offsetY}))
 }

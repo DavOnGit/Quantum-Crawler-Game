@@ -11,7 +11,7 @@ const reduxRouterMiddleware = syncHistory(browserHistory)
 const logger = createLogger({diff: true})
 
 const partialCreateStore = compose(
-  applyMiddleware(thunk, reduxRouterMiddleware, logger),
+  applyMiddleware(thunk, reduxRouterMiddleware),
   DevTools.instrument()
 )(createStore)
 

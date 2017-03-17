@@ -8,6 +8,7 @@ body {//height: 100%;
   display: flex;
   justify-content: center;
   font-family: 'Raleway', sans-serif;
+  font-size: rem-calc(14);
   overflow: hidden;
   
   &.no-justify {

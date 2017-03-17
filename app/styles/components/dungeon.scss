@@ -11,5 +11,62 @@
   // height: 1600px;
   // width: 600px;
   border: 1px solid $smort-blue;
-  //overflow: scroll;
+}
+
+.info-bar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  
+  .container {
+    background-color: $main-bg-color;
+    width: rem-calc(400);
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid $accent-blue;
+    border-left: 1px solid $accent-blue;
+    border-right: 1px solid $accent-blue;
+  }
+  
+  .tab {
+    padding: rem-calc(0 10);
+    text-align: center;
+    p {
+      line-height: 1;
+      margin: 8px 0;
+      color: #777;
+    }
+    a {
+      //color: $smort-yellow;
+    }
+  }
+  .icon {
+    vertical-align: middle;
+    padding: rem-calc(0 5);
+    &.game-lvl {
+      fill: $accent-pink;
+    }
+    &.player-lvl {
+      fill: $deep-blue;
+    }
+    &.life {
+      fill: $deep-red;
+    }
+    &.experience {
+      fill: $accent-orange;
+    }
+    &.weapon {
+      fill: $smort-yellow;
+    }
+    &.damage {
+      fill: $rebecca;
+    }
+    &.lvl-door {
+      fill: $deep-gray;
+    }
+  }
 }

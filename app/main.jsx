@@ -12,6 +12,7 @@ const map = mapGenerator()
 const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
 
 const initialState = {
+  gameLvl: 1,
   map: map,
   player: {
     ...PLAYER(),

@@ -1,7 +1,7 @@
 import _ from 'underscore'
 
 import {_compose, _drawRect, random} from 'helpers'
-import {mapSettings, WALL, FLOOR, DOOR, FOE, PLAYER, HEART, WEAPON, BOSS, LVL_DOOR, ITEMS_N} from 'settings'
+import {mapSettings, WALL, FLOOR, DOOR, FOE, HEART, WEAPON, BOSS, LVL_DOOR, ITEMS_N} from 'settings'
 
 // This exports the dungeon Map array
 export default (settings = mapSettings) => {

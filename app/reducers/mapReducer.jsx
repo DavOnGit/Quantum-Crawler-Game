@@ -64,10 +64,28 @@ export var playerReducer = (state = {}, action) => {
         ...state,
         life: action.life
       }
+    case 'SET_PLAYER_LVL':
+      return {
+        ...state,
+        lvl: action.level
+      }
     case 'SET_PLAYER_EXP':
       return {
         ...state,
+        nextLvl: action.nextLvl,
         exp: action.exp
+      }
+    case 'RESET_PLAYER':
+      return {
+        ...state,
+        name: action.player.name,
+        lvl: action.player.lvl,
+        wName: action.player.wName,
+        maxLife: action.player.maxLife,
+        life: action.player.life,
+        dmg: action.player.dmg,
+        exp: action.player.exp,
+        nextLvl: action.player.nextLvl
       }
     case 'MOVE':
       return {
