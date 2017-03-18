@@ -1,4 +1,5 @@
 import _ from 'underscore'
+import {batchActions} from 'redux-batched-actions'
 
 import mapGenerator from 'mapGen'
 import { mapSettings, PLAYER } from 'settings'
@@ -47,6 +48,13 @@ export function setPlayerLife (life) {
   return {
     type: 'SET_PLAYER_LIFE',
     life
+  }
+}
+
+export function setPlayerMaxLife (maxLife) {
+  return {
+    type: 'SET_PLAYER_MAX_LIFE',
+    maxLife
   }
 }
 
@@ -122,20 +130,33 @@ export function wScroll (pos) {
   }
 }
 
+export function openModal (title, message) {
+  return {
+    type: 'OPEN_MODAL',
+    title,
+    message
+  }
+}
+
+export function closeModal () {
+  return {
+    type: 'CLOSE_MODAL'
+  }
+}
+
 export function preMove (dest, dir) {
   return (dispatch, getState) => {
     const { gameLvl, map, player, screen } = getState()
     const canIgo = checkMove(gameLvl, map, player, dest, screen, dispatch)
 
-    const go = canIgo ? dispatch(move(player.position, dest))
-      : null
-
-    return go ? handleViewport(dest, screen, dir, dispatch)
-    : null
+    if (canIgo) {
+      const scrollBy = handleViewport(dest, screen, dir)
+      dispatch(batchActions([move(player.position, dest), wScroll(scrollBy)]))
+    }
   }
 }
 
-function handleViewport (dest, screen, dir, dispatch) {
+function handleViewport (dest, screen, dir) {
   const offsetX = ((dest.x) * 20) - (screen.dim.x / 2)
   const offsetY = ((dest.y) * 20) - (screen.dim.y / 2)
 
@@ -143,25 +164,25 @@ function handleViewport (dest, screen, dir, dispatch) {
     case 'left':
       if ((dest.x + 1) * 20 <= (100 * 20) - (screen.dim.x / 2)) {
         window.scrollBy(-20, 0)
-        dispatch(wScroll({x: offsetX, y: offsetY}))
+        return {x: offsetX, y: offsetY}
       }
       break
     case 'right':
       if ((dest.x + 1) * 20 >= screen.dim.x / 2) {
         window.scrollBy(20, 0)
-        dispatch(wScroll({x: offsetX, y: offsetY}))
+        return {x: offsetX, y: offsetY}
       }
       break
     case 'up':
       if ((dest.y + 1) * 20 >= screen.dim.y / 2) {
         window.scrollBy(0, -20)
-        dispatch(wScroll({x: offsetX, y: offsetY}))
+        return {x: offsetX, y: offsetY}
       }
       break
     case 'down':
       if ((dest.y + 1) * 20 >= screen.dim.y / 2) {
         window.scrollBy(0, 20)
-        dispatch(wScroll({x: offsetX, y: offsetY}))
+        return {x: offsetX, y: offsetY}
       }
       break
   }
@@ -176,46 +197,84 @@ function checkMove (gameLvl, map, player, dest, screen, dispatch) {
   if (cellName === 'heart') {
     const healSum = map[y][x].type.heal + player.life
     const heal = healSum >= player.maxLife ? player.maxLife : healSum
-    return dispatch(setPlayerLife(heal))
+    dispatch(setPlayerLife(heal))
+    return true
   }
   if (cellName === 'weapon') {
     const wName = map[y][x].type.wName
     const dmg = map[y][x].type.dmg + player.dmg
-    return dispatch(getWeapon(wName, dmg))
+    dispatch(getWeapon(wName, dmg))
+    return true
   }
   if (cellName === 'lvl-door') {
-    makeNewMap(gameLvl + 1, screen, dispatch)
+    const data = makeNewMap(gameLvl + 1, screen)
+    const {map, playerPos, offset} = data
+    const _actions = [
+      setMap(map),
+      setPlayerPos(playerPos),
+      setGameLvl(gameLvl + 1),
+      wScroll(offset)
+    ]
+    dispatch(batchActions(_actions))
     return false
   }
   if (cellName === 'foe' || cellName === 'boss') {
     const foeDmg = map[y][x].type.dmg
     const foeLife = map[y][x].type.life
     const playerLife = player.life - foeDmg
+
     if (playerLife <= 0) {
-      window.alert('U loose :(')
-      makeNewMap(1, screen, dispatch)
-      dispatch(resetPlayer(PLAYER()))
+      const data = makeNewMap(1, screen)
+      const {map, playerPos, offset} = data
+      const modTitle = 'Game Over :('
+      const modMsg = 'Enemy defeted you!\n Try again...'
+      const _actions = [
+        openModal(modTitle, modMsg),
+        setMap(map),
+        setPlayerPos(playerPos),
+        setGameLvl(1), wScroll(offset),
+        resetPlayer(PLAYER())
+      ]
+      dispatch(batchActions(_actions))
       return false
     }
-    dispatch(setPlayerLife(playerLife))
     const foeNewLife = foeLife - player.dmg
-    if (cellName === 'boss' && foeNewLife <= 0) return dispatch(youWin())
-    if (foeNewLife <= 0) {
-      const exp = map[y][x].type.exp
-      const nextLvl = player.nextLvl - exp
-      if (nextLvl > 0) return dispatch(setPlayerExp(nextLvl, player.exp + exp))
-      const newNextLvl = ((player.lvl + 1) * 30) + 70
-      dispatch(setPlayerLvl(player.lvl + 1))
-      dispatch(setPlayerExp(newNextLvl + nextLvl, -nextLvl))
+    if (cellName === 'boss' && foeNewLife <= 0) {
+      const data = makeNewMap(1, screen)
+      const {map, playerPos, offset} = data
+      const modTitle = 'A winner is You!'
+      const modMsg = 'Hope you enjoyed this little game.\nAd majora!'
+      const _actions = [
+        openModal(modTitle, modMsg),
+        setMap(map),
+        setPlayerPos(playerPos),
+        setGameLvl(1), wScroll(offset),
+        resetPlayer(PLAYER())
+      ]
+      dispatch(batchActions(_actions))
       return true
     }
-    dispatch(setFoe({...map[y][x].type, life: foeNewLife}, {x, y}))
+
+    if (foeNewLife <= 0) {
+      const exp = map[y][x].type.exp
+      const toNextLvl = player.nextLvl - exp
+
+      if (toNextLvl > 0) return dispatch(setPlayerExp(toNextLvl, player.exp + exp))
+
+      const maxLife = ((player.lvl + 1) * 30) + 70
+      const maxExp = ((player.lvl + 1) * 20) + 80
+      dispatch(batchActions([setPlayerLvl(player.lvl + 1), setPlayerExp(maxExp, -toNextLvl),
+        setPlayerMaxLife(maxLife), setPlayerLife(maxLife)]))
+
+      return true
+    }
+    dispatch(batchActions([setPlayerLife(playerLife), setFoe({...map[y][x].type, life: foeNewLife}, {x, y})]))
     return false
   }
   return false
 }
 
-function makeNewMap (level, screen, dispatch) {
+function makeNewMap (level, screen) {
   const settings = {...mapSettings, level: level}
   const map = mapGenerator(settings)
   const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
@@ -223,8 +282,5 @@ function makeNewMap (level, screen, dispatch) {
   const offsetX = ((playerPos.x + 1) * 20) - (screen.dim.x / 2)
   const offsetY = ((playerPos.y + 1) * 20) - (screen.dim.y / 2)
   window.scroll(offsetX, offsetY)
-  dispatch(setMap(map))
-  dispatch(setPlayerPos(playerPos))
-  dispatch(setGameLvl(level))
-  dispatch(wScroll({x: offsetX, y: offsetY}))
+  return {map, playerPos, offset: {x: offsetX, y: offsetY}}
 }

@@ -7,9 +7,9 @@ const App = (props) => (
     <div className="main-app-nav">
       <div id="main-app-title">Dungeon Crawler</div>
       <div>
-        <span><IndexLink to="/" activeClassName="active">Home</IndexLink></span>
-        <span><IndexLink to="/page2" activeClassName="active">Page2</IndexLink></span>
-        <span><IndexLink to="/game" activeClassName="active">Game</IndexLink></span>
+        <span><IndexLink to="/" activeClassName="active" tabIndex='1'>Home</IndexLink></span>
+        <span><IndexLink to="/page2" activeClassName="active" tabIndex='2'>Page2</IndexLink></span>
+        <span><IndexLink to="/game" activeClassName="active" tabIndex='3'>Game</IndexLink></span>
       </div>
     </div>
     <div>

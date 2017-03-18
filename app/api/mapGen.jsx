@@ -169,7 +169,7 @@ function setRoomCoord (tile, minRsize, maxRsize) {
 function checkDim (map, loc, gap) {
   const {x, y, spanX, spanY} = loc
   const roomDimOk =
-    (y < gap) ? false : (y > map.length - 1 - gap) ? false
+    (y < gap + 2) ? false : (y > map.length - 1 - gap) ? false
   : (x < gap) ? false : (x > map[0].length - 1 - gap) ? false
   : (y + spanY > map.length - 1 - gap) ? false
   : !(x + spanX > map[0].length - 1 - gap)

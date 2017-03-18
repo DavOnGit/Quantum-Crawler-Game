@@ -7,6 +7,7 @@ import { IndexLink } from 'react-router'
 import * as gameActions from 'gameActions'
 import MapRow from 'MapRow'
 import Icon from 'Icon'
+import Modal from 'Modal'
 
 class Dungeon extends React.Component {
   static propTypes = {
@@ -14,7 +15,8 @@ class Dungeon extends React.Component {
     map: PropTypes.array.isRequired,
     game: PropTypes.object.isRequired,
     player: PropTypes.object.isRequired,
-    screen: PropTypes.object.isRequired
+    screen: PropTypes.object.isRequired,
+    modal: PropTypes.object.isRequired
   }
 
   _handleKeyPress = (e) => {
@@ -51,13 +53,9 @@ class Dungeon extends React.Component {
   }
 
   componentDidMount () {
-    const playerPos = this.props.player.position
-    const windowDim = this.props.screen.dim
-    let offsetX = ((playerPos.x + 1) * 20) - (windowDim.x / 2)
-    let offsetY = ((playerPos.y + 1) * 20) - (windowDim.y / 2)
-    this.scrollTO = setTimeout(() => window.scroll(offsetX, offsetY), 5000)
-    this.props.game.wScroll({x: offsetX, y: offsetY})
+    const scroll = this.props.screen.scroll
     window.addEventListener('keydown', this._handleKeyPress)
+    this.scrollTO = setTimeout(() => window.scroll(scroll.x, scroll.y))
   }
 
   componentWillUnmount () {
@@ -67,8 +65,11 @@ class Dungeon extends React.Component {
   }
 
   render () {
-    let map = this.props.map
-    let renderMapRows = map.map((el, i) => <MapRow row={el} key={i}/>)
+    const {map, modal} = this.props
+    const renderMapRows = map.map((el, i) => <MapRow row={el} key={i}/>)
+    const renderModal = () => {
+      if (modal.message) return <Modal title={modal.title} message={modal.message} modCloseAction={this.props.game.closeModal}/>
+    }
 
     return (
       <div className='dungeon'>
@@ -107,6 +108,7 @@ class Dungeon extends React.Component {
           </div>
         </div>
         {renderMapRows}
+        {renderModal()}
       </div>
     )
   }
@@ -117,7 +119,8 @@ const mapStateToProps = (state) => {
     gameLvl: state.gameLvl,
     map: state.map,
     player: state.player,
-    screen: state.screen
+    screen: state.screen,
+    modal: state.modal
   }
 }
 

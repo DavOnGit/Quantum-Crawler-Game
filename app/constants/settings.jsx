@@ -33,7 +33,7 @@ export const LVL_DOOR = {
   name: 'lvl-door',
   life: 0
 }
-export const PLAYER = (playerLevel = 1, weapon = 'stick') => {
+export const PLAYER = (playerLevel = 1, weapon = 'fists') => {
   return {
     name: 'player',
     lvl: playerLevel,
@@ -64,7 +64,7 @@ export const FOE = (gameLevel) => {
   }
 }
 export const WEAPON = (gameLevel) => {
-  const wName = ['stick', 'knife', 'sword', 'axe']
+  const wName = ['fists', 'stick', 'knife', 'sword', 'axe']
   return {
     name: 'weapon',
     wName: wName[gameLevel],
@@ -74,7 +74,6 @@ export const WEAPON = (gameLevel) => {
     drop: 'dmg'
   }
 }
-
 export const ITEMS_N = (gameLevel, type) => {
   switch (type) {
     case 'FOE':
@@ -82,6 +81,6 @@ export const ITEMS_N = (gameLevel, type) => {
     case 'HEART':
       return random(3)
     default:
-      throw ('error: Items not match')
+      throw new Error("ITEMS_N doesn't match")
   }
 }

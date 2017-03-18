@@ -10,6 +10,9 @@ const rootEl = document.getElementById('app')
 
 const map = mapGenerator()
 const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
+const windowDim = {x: window.innerWidth, y: window.innerHeight}
+const offsetX = ((playerPos.x + 1) * 20) - (windowDim.x / 2)
+const offsetY = ((playerPos.y + 1) * 20) - (windowDim.y / 2)
 
 const initialState = {
   gameLvl: 1,
@@ -20,8 +23,8 @@ const initialState = {
   },
   darkness: false,
   screen: {
-    dim: {x: window.innerWidth, y: window.innerHeight},
-    scroll: {x: 0, y: 0}
+    dim: windowDim,
+    scroll: {x: offsetX, y: offsetY}
   }
 }
 const store = configureStore(initialState)

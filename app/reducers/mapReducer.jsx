@@ -1,4 +1,3 @@
-import { INCREMENT_COUNTER } from 'ActionTypes'
 import { FLOOR } from 'settings'
 import {_drawRect} from 'helpers'
 
@@ -64,6 +63,11 @@ export var playerReducer = (state = {}, action) => {
         ...state,
         life: action.life
       }
+    case 'SET_PLAYER_MAX_LIFE':
+      return {
+        ...state,
+        maxLife: action.maxLife
+      }
     case 'SET_PLAYER_LVL':
       return {
         ...state,
@@ -102,6 +106,20 @@ export var playerReducer = (state = {}, action) => {
 
 export var darknessReducer = (state = 0, action) => {
   switch (action.type) {
+    default:
+      return state
+  }
+}
+
+export var modalReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'OPEN_MODAL':
+      return {
+        title: action.title,
+        message: action.message
+      }
+    case 'CLOSE_MODAL':
+      return {}
     default:
       return state
   }
