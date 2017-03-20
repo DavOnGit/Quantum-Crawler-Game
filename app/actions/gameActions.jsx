@@ -2,7 +2,7 @@ import _ from 'underscore'
 import {batchActions} from 'redux-batched-actions'
 
 import mapGenerator from 'mapGen'
-import { mapSettings, PLAYER } from 'settings'
+import { mapSettings, cellDim, PLAYER } from 'settings'
 
 export function move (playerPos, dest) {
   return {
@@ -157,35 +157,37 @@ export function preMove (dest, dir) {
 }
 
 function handleViewport (dest, screen, dir) {
-  const offsetX = ((dest.x) * 20) - (screen.dim.x / 2)
-  const offsetY = ((dest.y) * 20) - (screen.dim.y / 2)
+  const offsetX = ((dest.x + 1) * cellDim) - ~~(screen.dim.x / 2)
+  const offsetY = ((dest.y + 1) * cellDim) - ~~(screen.dim.y / 2)
 
-  switch (dir) {
-    case 'left':
-      if ((dest.x + 1) * 20 <= (100 * 20) - (screen.dim.x / 2)) {
-        window.scrollBy(-20, 0)
-        return {x: offsetX, y: offsetY}
-      }
-      break
-    case 'right':
-      if ((dest.x + 1) * 20 >= screen.dim.x / 2) {
-        window.scrollBy(20, 0)
-        return {x: offsetX, y: offsetY}
-      }
-      break
-    case 'up':
-      if ((dest.y + 1) * 20 >= screen.dim.y / 2) {
-        window.scrollBy(0, -20)
-        return {x: offsetX, y: offsetY}
-      }
-      break
-    case 'down':
-      if ((dest.y + 1) * 20 >= screen.dim.y / 2) {
-        window.scrollBy(0, 20)
-        return {x: offsetX, y: offsetY}
-      }
-      break
-  }
+  window.scrollTo(offsetX, offsetY)
+  return {x: offsetX, y: offsetY}
+  // switch (dir) {
+  //   case 'left':
+  //     if ((dest.x + 1) * cellDim <= (100 * cellDim) - (screen.dim.x / 2)) {
+  //       window.scrollBy(-cellDim, 0)
+  //       return {x: offsetX, y: offsetY}
+  //     }
+  //     break
+  //   case 'right':
+  //     if ((dest.x + 1) * cellDim >= screen.dim.x / 2) {
+  //       window.scrollBy(cellDim, 0)
+  //       return {x: offsetX, y: offsetY}
+  //     }
+  //     break
+  //   case 'up':
+  //     if ((dest.y + 1) * cellDim >= screen.dim.y / 2) {
+  //       window.scrollBy(0, -cellDim)
+  //       return {x: offsetX, y: offsetY}
+  //     }
+  //     break
+  //   case 'down':
+  //     if ((dest.y + 1) * cellDim >= screen.dim.y / 2) {
+  //       window.scrollBy(0, cellDim)
+  //       return {x: offsetX, y: offsetY}
+  //     }
+  //     break
+  // }
 }
 
 function checkMove (gameLvl, map, player, dest, screen, dispatch) {
@@ -279,8 +281,8 @@ function makeNewMap (level, screen) {
   const map = mapGenerator(settings)
   const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
   console.log(playerPos, screen)
-  const offsetX = ((playerPos.x + 1) * 20) - (screen.dim.x / 2)
-  const offsetY = ((playerPos.y + 1) * 20) - (screen.dim.y / 2)
+  const offsetX = ((playerPos.x + 1) * cellDim) - (screen.dim.x / 2)
+  const offsetY = ((playerPos.y + 1) * cellDim) - (screen.dim.y / 2)
   window.scroll(offsetX, offsetY)
   return {map, playerPos, offset: {x: offsetX, y: offsetY}}
 }

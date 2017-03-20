@@ -12,6 +12,8 @@ export const mapSettings = {
   gap: 1        // Used as spacer, margin
 }
 
+export const cellDim = 20
+
 export const WALL = {
   name: 'wall',
   life: Infinity

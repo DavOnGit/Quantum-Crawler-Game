@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'underscore'
 
-import { configureStore } from 'configureStore'
+import { default as configureStore } from 'configureStore'
 import mapGenerator from 'mapGen'
 import { PLAYER } from 'settings'
+require('applicationStyles')                      // Import styles
 
 const rootEl = document.getElementById('app')
 
@@ -31,7 +32,7 @@ const store = configureStore(initialState)
 
 // hot reloading
 let render = () => {
-  const Root = require('Root').default
+  const Root = require('Root')
   ReactDOM.render(
     <Root store={ store } />,
     rootEl
@@ -52,12 +53,12 @@ if (module.hot) {
     try {
       renderApp()
     } catch (error) {
-      renderError()
+      renderError(error)
     }
   }
   module.hot.accept('Root', () => {
-    setTimeout(render)
+    render()
   })
 }
-
+console.log('No HMR')
 render()

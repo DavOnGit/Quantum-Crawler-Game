@@ -1,5 +1,6 @@
 node_modules/
-public/bundle.js
+public/js/
+public/styles/
 config/
 playground/**/*.*
 *.log*

@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { IndexLink } from 'react-router'
+import ReactDOM from 'react-dom'
 
 import * as gameActions from 'gameActions'
 import MapRow from 'MapRow'
@@ -25,19 +26,25 @@ class Dungeon extends React.Component {
     const pos = this.props.player.position
 
     switch (e.keyCode) {
-      case 37:
+      case 37:console.log('left')
         game.preMove({...pos, x: pos.x - 1}, 'left')
         break
-      case 38:
+      case 38:console.log('up')
         game.preMove({...pos, y: pos.y - 1}, 'up')
         break
-      case 39:
+      case 39:console.log('right')
         game.preMove({...pos, x: pos.x + 1}, 'right')
         break
-      case 40:
+      case 40:console.log('down')
         game.preMove({...pos, y: pos.y + 1}, 'down')
         break
     }
+  }
+
+  _onNextFrame = () => {
+    console.log('onNextFrame!')
+    const scroll = this.props.screen.scroll
+    window.requestAnimationFrame(() => window.scrollTo(scroll.x, scroll.y))
   }
 
   componentWillMount () {
@@ -52,25 +59,25 @@ class Dungeon extends React.Component {
     }
   }
 
-  componentDidMount () {
-    const scroll = this.props.screen.scroll
-    window.addEventListener('keydown', this._handleKeyPress)
-    this.scrollTO = setTimeout(() => window.scroll(scroll.x, scroll.y))
+  componentDidMount () {console.log('didMount', this._handleKeypress);
+    document.body.addEventListener('keydown', this._handleKeyPress, false)
+    // this.scrollTO = setTimeout(() => window.scroll(scroll.x, scroll.y), 1000)
+    this._onNextFrame()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount () {console.log('didUnmount', this._handleKeypress);
+    document.body.removeEventListener('keydown', this._handleKeypress, false)
     document.body.className = ''
-    window.removeEventListener('keydown', this._handleKeypress)
-    clearTimeout(this.scrollTO)
+    // clearTimeout(this.scrollTO)
   }
 
   render () {
+    console.log('render')
     const {map, modal} = this.props
     const renderMapRows = map.map((el, i) => <MapRow row={el} key={i}/>)
     const renderModal = () => {
       if (modal.message) return <Modal title={modal.title} message={modal.message} modCloseAction={this.props.game.closeModal}/>
     }
-
     return (
       <div className='dungeon'>
         <div className='info-bar'>
