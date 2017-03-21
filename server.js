@@ -8,7 +8,7 @@ const compression = require('compression')
 const app = express()
 const compiler = webpack(config)
 const ENV = process.env.NODE_ENV
-const HOST = process.env.HOST || 'localhost'
+//const HOST = process.env.HOST || 'localhost'
 const PORT = process.env.PORT || 3000
 
 if (ENV !== 'production') {
@@ -36,10 +36,10 @@ if (ENV !== 'production') {
   })
 }
 
-app.listen(PORT, HOST, (err) => {
+app.listen(PORT, (err) => {
   if (err) {
     console.log(err)
     return
   };
-  console.log('Express server running at http://%s:%s', HOST, PORT)
+  console.log('Express server running on port', PORT)
 })
