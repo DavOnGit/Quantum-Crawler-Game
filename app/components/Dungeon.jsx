@@ -3,12 +3,12 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { IndexLink } from 'react-router'
-import ReactDOM from 'react-dom'
 
 import * as gameActions from 'gameActions'
 import MapRow from 'MapRow'
 import Icon from 'Icon'
 import Modal from 'Modal'
+import { cellDim } from 'settings'
 
 class Dungeon extends React.Component {
   static propTypes = {
@@ -59,20 +59,19 @@ class Dungeon extends React.Component {
     }
   }
 
-  componentDidMount () {console.log('didMount', this._handleKeypress);
-    document.body.addEventListener('keydown', this._handleKeyPress, false)
-    // this.scrollTO = setTimeout(() => window.scroll(scroll.x, scroll.y), 1000)
+  componentDidMount () {
     this._onNextFrame()
+    const addKeyEvL = document.body.addEventListener || document.body.attachEvent
+    addKeyEvL('keydown', this._handleKeyPress, false)
   }
 
-  componentWillUnmount () {console.log('didUnmount', this._handleKeypress);
-    document.body.removeEventListener('keydown', this._handleKeypress, false)
+  componentWillUnmount () {
     document.body.className = ''
-    // clearTimeout(this.scrollTO)
+    const removeKeyEvL = document.body.removeEventListener || document.body.detachEvent
+    removeKeyEvL('keydown', this._handleKeyPress)
   }
 
   render () {
-    console.log('render')
     const {map, modal} = this.props
     const renderMapRows = map.map((el, i) => <MapRow row={el} key={i}/>)
     const renderModal = () => {
@@ -83,32 +82,32 @@ class Dungeon extends React.Component {
         <div className='info-bar'>
           <div className='container'>
             <div className='tab' title='Dungeon Level'>
-              <p><Icon icon='game-lvl'/></p>
+              <p><Icon icon='game-lvl' width={cellDim}/></p>
               <p>{this.props.gameLvl}</p>
             </div>
             <div className='tab' title='Level'>
-              <p><Icon icon='player-lvl'/></p>
+              <p><Icon icon='player-lvl' width={cellDim}/></p>
               <p>{this.props.player.lvl}</p>
             </div>
             <div className='tab' title='Life'>
-              <p><Icon icon='life'/></p>
+              <p><Icon icon='life' width={cellDim}/></p>
               <p>{this.props.player.life}/{this.props.player.maxLife}</p>
             </div>
             <div className='tab' title='Experience'>
-              <p><Icon icon='experience'/></p>
+              <p><Icon icon='experience' width={cellDim}/></p>
               <p>{this.props.player.exp}</p>
             </div>
             <div className='tab' title='Weapon'>
-              <p><Icon icon='weapon'/></p>
+              <p><Icon icon='weapon' width={cellDim}/></p>
               <p>{this.props.player.wName}</p>
             </div>
             <div className='tab' title='Damage'>
-              <p><Icon icon='damage'/></p>
+              <p><Icon icon='damage' width={cellDim}/></p>
               <p>{this.props.player.dmg}</p>
             </div>
             <div className='tab' title='Pause/Exit'>
               <IndexLink to='/' activeClassName="active">
-                <p><Icon icon='lvl-door'/></p>
+                <p><Icon icon='lvl-door' width={cellDim}/></p>
                 <p>exit</p>
               </IndexLink>
             </div>

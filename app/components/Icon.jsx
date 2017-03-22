@@ -1,5 +1,5 @@
 import React from 'react'
-const {PropTypes} = React
+const { PropTypes } = React
 
 const icons = {
   'weapon': 'M986.51 37.49c-49.988-49.986-131.032-49.986-181.020 0l-172.118 172.118-121.372-121.372-135.764 135.764 106.426 106.426-472.118 472.118c-8.048 8.048-11.468 18.958-10.3 29.456h-0.244v160c0 17.674 14.328 32 32 32h160c0 0 2.664 0 4 0 9.212 0 18.426-3.516 25.456-10.544l472.118-472.118 106.426 106.426 135.764-135.764-121.372-121.372 172.118-172.118c49.986-49.988 49.986-131.032 0-181.020zM173.090 960h-109.090v-109.090l469.574-469.572 109.088 109.088-469.572 469.574z',
@@ -15,13 +15,14 @@ const icons = {
 }
 
 const Icon = props => (
-  <svg className={`icon ${props.icon}`} width="20" height="100%" viewBox="0 0 1024 1024">
+  <svg className={`icon ${props.icon}`} width={props.width} height={props.width} viewBox="0 0 1024 1024">
     <path d={icons[props.icon]}></path>
   </svg>
 )
 
 Icon.propTypes = {
-  icon: PropTypes.string.isRequired
+  icon: PropTypes.string.isRequired,
+  width: PropTypes.string.isRequired
 }
 
 export default Icon

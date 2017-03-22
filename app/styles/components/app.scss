@@ -1,47 +1,107 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:100,400);
 
-//html { height: 100%; overflow:auto; }
-
-body {//height: 100%;
+body {
   background-color: $main-bg-color;
   color: $accent-black;
   display: flex;
   justify-content: center;
   font-family: 'Raleway', sans-serif;
-  font-size: rem-calc(14);
   overflow: hidden;
   
-  &.no-justify {
-    justify-content: flex-start;
-  }
-  &.align {
-    align-items: center;
+  &.no-justify { justify-content: flex-start; }
+  &.align { align-items: center; }
+}
+.main-app-title {
+  
+  h1 { font-family: inherit; }
+  
+  svg {
+    width: 1.7rem;
+    fill: $accent-black;
+    vertical-align: middle;
+    margin: 0 1.5px;
   }
 }
 
+
 .main-app-container {
-  padding-top: 2em;
+  padding-top: 1rem;
 }
 
 .main-app-nav {
-  font-size: 2em;
+  //font-size: 2em;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: remCalc(10);
 
   a {
     text-decoration: none;
     color: $accent-blue;
     font-size: 1.2rem;
     padding: 0 10px 5px 10px;
-    &:hover {
-      color: $smort-blue;
-    }
-    &.active {
-      border-bottom: 1px solid $accent-blue;
-    }
+    
+    &:hover { color: $smort-blue; }
+    
+    &.active { border-bottom: 1px solid $accent-blue; }
   }
 }
 
 .view-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
   
+  li {
+    margin-bottom: 1rem;
+    
+    .list-item {
+      display: flex;
+      align-items: center;
+      
+      span { padding-left: .8rem;}
+    }
+  }
+  
+  .icon-container {
+    display: inline-block;
+    height: 2rem;
+    
+    svg { width: 2rem; }
+    
+    &.foe {
+      background-color: $accent-orange;
+      border-radius: 50%;
+    }
+    
+    &.heart {
+      background-color: $accent-green;
+    }
+    
+    &.player {
+      background-color: $deep-blue;
+      border-radius: 50%;
+    }
+    
+    &.weapon {
+      background-color: $smort-yellow;
+    }
+    
+    &.boss {
+      background-color: $rebecca;
+      border-radius: 50%;
+    }
+    
+    &.lvl-door {
+      background-color: $deep-gray;
+    }
+  }
+  .button {
+    color: $accent-blue;
+    border: 1px solid $accent-blue;
+    &:hover {
+      color: $smort-blue;
+      border: 1px solid $smort-blue;
+    }
+  }
 }

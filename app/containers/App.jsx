@@ -1,15 +1,18 @@
 import React, { PropTypes } from 'react'
 import { IndexLink } from 'react-router'
+
 import Footer from 'Footer'
+import Icon from 'Icon'
 
 const App = (props) => (
   <div className="main-app-container">
     <div className="main-app-nav">
-      <div id="main-app-title">Dungeon Crawler</div>
+      <div className="main-app-title">
+        <h1>Dunge<span><Icon icon='player'/></span>n Crawler</h1>
+      </div>
       <div>
         <span><IndexLink to="/" activeClassName="active">Home</IndexLink></span>
-        <span><IndexLink to="/page2" activeClassName="active">Page2</IndexLink></span>
-        <span><IndexLink to="game" activeClassName="active">Game</IndexLink></span>
+        <span><IndexLink to="/page2" activeClassName="active">About</IndexLink></span>
       </div>
     </div>
     <div>

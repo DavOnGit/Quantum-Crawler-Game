@@ -162,32 +162,6 @@ function handleViewport (dest, screen, dir) {
 
   window.scrollTo(offsetX, offsetY)
   return {x: offsetX, y: offsetY}
-  // switch (dir) {
-  //   case 'left':
-  //     if ((dest.x + 1) * cellDim <= (100 * cellDim) - (screen.dim.x / 2)) {
-  //       window.scrollBy(-cellDim, 0)
-  //       return {x: offsetX, y: offsetY}
-  //     }
-  //     break
-  //   case 'right':
-  //     if ((dest.x + 1) * cellDim >= screen.dim.x / 2) {
-  //       window.scrollBy(cellDim, 0)
-  //       return {x: offsetX, y: offsetY}
-  //     }
-  //     break
-  //   case 'up':
-  //     if ((dest.y + 1) * cellDim >= screen.dim.y / 2) {
-  //       window.scrollBy(0, -cellDim)
-  //       return {x: offsetX, y: offsetY}
-  //     }
-  //     break
-  //   case 'down':
-  //     if ((dest.y + 1) * cellDim >= screen.dim.y / 2) {
-  //       window.scrollBy(0, cellDim)
-  //       return {x: offsetX, y: offsetY}
-  //     }
-  //     break
-  // }
 }
 
 function checkMove (gameLvl, map, player, dest, screen, dispatch) {

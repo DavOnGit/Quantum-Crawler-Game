@@ -1,6 +1,7 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 
 import Icon from 'Icon'
+import { cellDim } from 'settings'
 
 class MapTyle extends React.Component {
   static propTypes = {type: PropTypes.string.isRequired}
@@ -15,37 +16,37 @@ class MapTyle extends React.Component {
         case 'player':
           return (
             <div className={`map-tile-inner ${this.props.type}`}>
-              <Icon icon={this.props.type}/>
+              <Icon icon={this.props.type} width={cellDim}/>
             </div>
           )
         case 'foe':
           return (
             <div className={`map-tile-inner ${this.props.type}`}>
-              <Icon icon={this.props.type}/>
+              <Icon icon={this.props.type} width={cellDim}/>
             </div>
           )
         case 'heart':
           return (
             <div className={`map-tile-inner ${this.props.type}`}>
-              <Icon icon={this.props.type}/>
+              <Icon icon={this.props.type} width={cellDim}/>
             </div>
           )
         case 'lvl-door':
           return (
             <div className={`map-tile-inner ${this.props.type}`}>
-              <Icon icon={this.props.type}/>
+              <Icon icon={this.props.type} width={cellDim}/>
             </div>
           )
         case 'weapon':
           return (
             <div className={`map-tile-inner ${this.props.type}`}>
-              <Icon icon={this.props.type}/>
+              <Icon icon={this.props.type} width={cellDim}/>
             </div>
           )
         case 'boss':
           return (
             <div className={`map-tile-inner ${this.props.type}`}>
-              <Icon icon='player'/>
+              <Icon icon='player' width={cellDim}/>
             </div>
           )
         default:
