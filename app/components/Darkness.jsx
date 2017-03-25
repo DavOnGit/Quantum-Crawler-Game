@@ -16,7 +16,7 @@ class Darkness extends Component {
 
   render () {
     const {position} = this.props
-    const circleDim = ~~cellDim * 15 * 2// Math.min(screen.x, screen.y) * 0.7 > 400 ? Math.min(screen.x, screen.y) * 0.7 : 400
+    const circleDim = ~~cellDim * 2 * 15    // visual distance
     const offsetX = ((position.x + 0.5) * cellDim) - ~~(circleDim / 2)
     const offsetY = ((position.y + 0.5) * cellDim) - ~~(circleDim / 2)
     const styles = {

@@ -48,9 +48,9 @@ class Dungeon extends React.Component {
   }
 
   _onNextFrame = () => {
-    console.log('onNextFrame!')
+    console.log('onNextFrame!', this.props.screen.scroll, window.requestAnimationFrame)
     const scroll = this.props.screen.scroll
-    window.requestAnimationFrame(() => window.scrollTo(scroll.x, scroll.y))
+    setTimeout(() => window.scrollTo(scroll.x, scroll.y))
   }
 
   componentWillMount () {
@@ -68,15 +68,15 @@ class Dungeon extends React.Component {
   }
 
   componentDidMount () {
+    const addKeybEvL = document.body.addEventListener || document.body.attachEvent
+    addKeybEvL('keydown', this._handleKeyPress, false)
     this._onNextFrame()
-    const addKeyEvL = document.body.addEventListener || document.body.attachEvent
-    addKeyEvL('keydown', this._handleKeyPress, false)
   }
 
   componentWillUnmount () {
     document.body.className = ''
-    const removeKeyEvL = document.body.removeEventListener || document.body.detachEvent
-    removeKeyEvL('keydown', this._handleKeyPress)
+    const removeKeybEvL = document.body.removeEventListener || document.body.detachEvent
+    removeKeybEvL('keydown', this._handleKeyPress)
   }
 
   render () {

@@ -2,10 +2,6 @@
 
 h1,h2,h3,h4,h5,h6,p,span,ul,pre,a,button { font-family: 'Raleway', sans-serif; }
 
-html, body {
-  height: 100%;
-}
-
 body {
   background-color: $main-bg-color;
   color: $accent-black;
@@ -22,14 +18,6 @@ body {
   &.align {
     align-items: center;
     overflow: hidden;
-  }
-}
-
-#app {
-  >div {
-    width: 100%;
-    height: 100%;
-    user-select: none;
   }
 }
 
@@ -144,10 +132,10 @@ body {
     border: 2.5px solid $accent-blue;
     font-weight: bold;
     box-shadow: 0 1px 5px 0px #999;
-    animation: colormorph 10s infinite;
+    animation: colormorph 20s infinite;
     transition: border 0.5s ease;
     &:hover {
-      border: 2.5px solid $accent-black;
+      border: 2px solid $accent-black;
       transition: border 0.5s ease;
     }
     
