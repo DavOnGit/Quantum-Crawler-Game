@@ -5,15 +5,15 @@ import _ from 'underscore'
 import { default as configureStore } from 'configureStore'
 import mapGenerator from 'mapGen'
 import { PLAYER } from 'settings'
-require('applicationStyles')                      // Import styles
+import 'applicationStyles'                      // Import styles
 
 const rootEl = document.getElementById('app')
 
 const map = mapGenerator()
 const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
 const windowDim = {x: window.innerWidth, y: window.innerHeight}
-const offsetX = ((playerPos.x + 1) * 20) - (windowDim.x / 2)
-const offsetY = ((playerPos.y + 1) * 20) - (windowDim.y / 2)
+const offsetX = ((playerPos.x + 0.5) * 20) + 1 - (windowDim.x / 2)
+const offsetY = ((playerPos.y + 0.5) * 20) + 1 - (windowDim.y / 2)
 
 const initialState = {
   gameLvl: 1,
@@ -22,7 +22,7 @@ const initialState = {
     ...PLAYER(),
     position: {...playerPos}
   },
-  darkness: false,
+  darkness: true,
   screen: {
     dim: windowDim,
     scroll: {x: offsetX, y: offsetY}

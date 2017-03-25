@@ -1,7 +1,7 @@
 /* RouteReducer captures routes as state */
 import { combineReducers } from 'redux'
 import { routeReducer } from 'react-router-redux'
-import undoable from 'redux-undo'
+// import undoable from 'redux-undo'
 
 import { gameLvlReducer, mapReducer, playerReducer,
   darknessReducer, screenReducer, modalReducer } from './mapReducer'

@@ -35,10 +35,10 @@ module.exports = {
     filename: 'js/[name].js',
     publicPath: '/'
   },
-  // externals: {
-  //   jquery: 'jQuery',
-  //   underscore: '_'
-  // },
+  externals: {
+    jquery: 'jQuery',
+    underscore: '_'
+  },
   resolve: {
     root: __dirname,
     modulesDirectories: [
@@ -82,7 +82,7 @@ module.exports = {
         loader: isProd ? ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass?sourceMap&outputStyle=expanded')
           : 'style!css?sourceMap!postcss!sass?sourceMap&outputStyle=expanded'
       },
-      { // Images inline base64 URLs for <=8k images, direct URLs for the rest
+      { // Images inline base64 URLs for <=8k images, direct URLs otherways
         test: /\.(png|jpg|jpeg|gif|svg)$/,
         loader: 'url',
         query: {
@@ -122,7 +122,7 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new ExtractTextPlugin('styles/bundle.css', {allChunks: true}),
     new webpack.optimize.UglifyJsPlugin({
-      compressor: {warnings: false, drop_console: false, drop_debugger: true},
+      compressor: {warnings: false, drop_console: true, drop_debugger: true},
       output: {ascii_only: true, comments: false}
     }),
     new webpack.optimize.CommonsChunkPlugin({

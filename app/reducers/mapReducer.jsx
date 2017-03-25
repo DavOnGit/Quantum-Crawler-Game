@@ -104,8 +104,10 @@ export var playerReducer = (state = {}, action) => {
   }
 }
 
-export var darknessReducer = (state = 0, action) => {
+export var darknessReducer = (state = true, action) => {
   switch (action.type) {
+    case 'TOGGLE_DARKNESS':
+      return !state
     default:
       return state
   }

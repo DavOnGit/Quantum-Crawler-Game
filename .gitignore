@@ -5,3 +5,4 @@ config/
 playground/**/*.*
 *.log*
 npm-debug.log
+media/

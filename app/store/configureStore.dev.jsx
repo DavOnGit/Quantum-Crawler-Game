@@ -12,7 +12,7 @@ const reduxRouterMiddleware = syncHistory(browserHistory)
 const logger = createLogger({diff: true})
 
 const composeStore = compose(
-  applyMiddleware(thunk, reduxRouterMiddleware, logger),
+  applyMiddleware(thunk, reduxRouterMiddleware),
   window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
 )(createStore)
 

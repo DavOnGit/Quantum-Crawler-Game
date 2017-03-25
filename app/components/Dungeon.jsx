@@ -2,13 +2,13 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { IndexLink } from 'react-router'
 
 import * as gameActions from 'gameActions'
 import MapRow from 'MapRow'
-import Icon from 'Icon'
+import Display from 'Display'
 import Modal from 'Modal'
-import { cellDim } from 'settings'
+import Darkness from 'Darkness'
+import { cellDim, mapSettings } from 'settings'
 
 class Dungeon extends React.Component {
   static propTypes = {
@@ -17,7 +17,8 @@ class Dungeon extends React.Component {
     game: PropTypes.object.isRequired,
     player: PropTypes.object.isRequired,
     screen: PropTypes.object.isRequired,
-    modal: PropTypes.object.isRequired
+    modal: PropTypes.object.isRequired,
+    darkness: PropTypes.bool.isRequired
   }
 
   _handleKeyPress = (e) => {
@@ -25,20 +26,25 @@ class Dungeon extends React.Component {
     const game = this.props.game
     const pos = this.props.player.position
 
-    switch (e.keyCode) {
-      case 37:console.log('left')
+    switch (e.key) {
+      case 'ArrowLeft':console.log('left')
         game.preMove({...pos, x: pos.x - 1}, 'left')
         break
-      case 38:console.log('up')
+      case 'ArrowUp':console.log('up')
         game.preMove({...pos, y: pos.y - 1}, 'up')
         break
-      case 39:console.log('right')
+      case 'ArrowRight':console.log('right')
         game.preMove({...pos, x: pos.x + 1}, 'right')
         break
-      case 40:console.log('down')
+      case 'ArrowDown':console.log('down')
         game.preMove({...pos, y: pos.y + 1}, 'down')
         break
     }
+  }
+
+  _handleClickDark = (e) => {
+    e.stopPropagation()
+    this.props.game.toggleDarkness()
   }
 
   _onNextFrame = () => {
@@ -48,12 +54,14 @@ class Dungeon extends React.Component {
   }
 
   componentWillMount () {
+    const {dim} = this.props.screen
+    const mapSize = (mapSettings.width * cellDim) + 2       // this magic number is to account the border
     let bodyClass = document.body.className
-    if (window.innerWidth <= 2002) {
+    if (dim.x <= mapSize) {
       bodyClass += ' no-justify'
       document.body.className = bodyClass
     }
-    if (window.innerHeight >= 2002) {
+    if (dim.x >= mapSize) {
       bodyClass += ' align'
       document.body.className = bodyClass
     }
@@ -72,48 +80,19 @@ class Dungeon extends React.Component {
   }
 
   render () {
-    const {map, modal} = this.props
+    const {map, player, screen, modal, darkness} = this.props
     const renderMapRows = map.map((el, i) => <MapRow row={el} key={i}/>)
     const renderModal = () => {
-      if (modal.message) return <Modal title={modal.title} message={modal.message} modCloseAction={this.props.game.closeModal}/>
+      if (modal.message) return <Modal title={modal.title} message={modal.message}/>
+    }
+    const renderDarkness = () => {
+      if (darkness) return <Darkness _handleClick={this._handleClickDark} position={player.position} screen={screen.dim}/>
     }
     return (
-      <div className='dungeon'>
-        <div className='info-bar'>
-          <div className='container'>
-            <div className='tab' title='Dungeon Level'>
-              <p><Icon icon='game-lvl' width={cellDim}/></p>
-              <p>{this.props.gameLvl}</p>
-            </div>
-            <div className='tab' title='Level'>
-              <p><Icon icon='player-lvl' width={cellDim}/></p>
-              <p>{this.props.player.lvl}</p>
-            </div>
-            <div className='tab' title='Life'>
-              <p><Icon icon='life' width={cellDim}/></p>
-              <p>{this.props.player.life}/{this.props.player.maxLife}</p>
-            </div>
-            <div className='tab' title='Experience'>
-              <p><Icon icon='experience' width={cellDim}/></p>
-              <p>{this.props.player.exp}</p>
-            </div>
-            <div className='tab' title='Weapon'>
-              <p><Icon icon='weapon' width={cellDim}/></p>
-              <p>{this.props.player.wName}</p>
-            </div>
-            <div className='tab' title='Damage'>
-              <p><Icon icon='damage' width={cellDim}/></p>
-              <p>{this.props.player.dmg}</p>
-            </div>
-            <div className='tab' title='Pause/Exit'>
-              <IndexLink to='/' activeClassName="active">
-                <p><Icon icon='lvl-door' width={cellDim}/></p>
-                <p>exit</p>
-              </IndexLink>
-            </div>
-          </div>
-        </div>
+      <div className='dungeon' onClick={this._handleClickDark}>
+        {renderDarkness()}
         {renderMapRows}
+        <Display/>
         {renderModal()}
       </div>
     )
@@ -126,7 +105,8 @@ const mapStateToProps = (state) => {
     map: state.map,
     player: state.player,
     screen: state.screen,
-    modal: state.modal
+    modal: state.modal,
+    darkness: state.darkness
   }
 }
 

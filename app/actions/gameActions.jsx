@@ -117,9 +117,9 @@ export function setGameLvl (level) {
   }
 }
 
-export function gameOver () {
+export function toggleDarkness () {
   return {
-    type: 'GAME_OVER'
+    type: 'TOGGLE_DARKNESS'
   }
 }
 
@@ -144,22 +144,39 @@ export function closeModal () {
   }
 }
 
+export function gameEnd () {
+  return (dispatch, getState) => {
+    const { screen } = getState()
+    const data = makeNewMap(1, screen)
+    const {map, playerPos, offset} = data
+
+    const _actions = [
+      setGameLvl(1),
+      setMap(map),
+      resetPlayer(PLAYER()),
+      setPlayerPos(playerPos),
+      wScroll(offset),
+      closeModal()
+    ]
+    dispatch(batchActions(_actions))
+  }
+}
+
 export function preMove (dest, dir) {
   return (dispatch, getState) => {
     const { gameLvl, map, player, screen } = getState()
     const canIgo = checkMove(gameLvl, map, player, dest, screen, dispatch)
 
     if (canIgo) {
-      const scrollBy = handleViewport(dest, screen, dir)
-      dispatch(batchActions([move(player.position, dest), wScroll(scrollBy)]))
+      const scrollTo = handleViewport(dest, screen, dir)
+      dispatch(batchActions([move(player.position, dest), wScroll(scrollTo)]))
     }
   }
 }
 
 function handleViewport (dest, screen, dir) {
-  const offsetX = ((dest.x + 1) * cellDim) - ~~(screen.dim.x / 2)
-  const offsetY = ((dest.y + 1) * cellDim) - ~~(screen.dim.y / 2)
-
+  const offsetX = ((dest.x + 0.5) * cellDim) + 1 - ~~(screen.dim.x / 2)
+  const offsetY = ((dest.y + 0.5) * cellDim) + 1 - ~~(screen.dim.y / 2)
   window.scrollTo(offsetX, offsetY)
   return {x: offsetX, y: offsetY}
 }
@@ -195,40 +212,25 @@ function checkMove (gameLvl, map, player, dest, screen, dispatch) {
     return false
   }
   if (cellName === 'foe' || cellName === 'boss') {
-    const foeDmg = map[y][x].type.dmg
+    const foeDmg = ~~_.random(map[y][x].type.dmg * 0.5, map[y][x].type.dmg * 1.5)
     const foeLife = map[y][x].type.life
     const playerLife = player.life - foeDmg
 
     if (playerLife <= 0) {
-      const data = makeNewMap(1, screen)
-      const {map, playerPos, offset} = data
       const modTitle = 'Game Over :('
-      const modMsg = 'Enemy defeted you!\n Try again...'
-      const _actions = [
-        openModal(modTitle, modMsg),
-        setMap(map),
-        setPlayerPos(playerPos),
-        setGameLvl(1), wScroll(offset),
-        resetPlayer(PLAYER())
-      ]
-      dispatch(batchActions(_actions))
+      const modMsg = 'Enemy defeted you! Try again...'
+
+      dispatch(openModal(modTitle, modMsg))
       return false
     }
-    const foeNewLife = foeLife - player.dmg
+
+    const foeNewLife = foeLife - _.random(player.dmg * 0.5, player.dmg * 1.5)
     if (cellName === 'boss' && foeNewLife <= 0) {
-      const data = makeNewMap(1, screen)
-      const {map, playerPos, offset} = data
       const modTitle = 'A winner is You!'
-      const modMsg = 'Hope you enjoyed this little game.\nAd majora!'
-      const _actions = [
-        openModal(modTitle, modMsg),
-        setMap(map),
-        setPlayerPos(playerPos),
-        setGameLvl(1), wScroll(offset),
-        resetPlayer(PLAYER())
-      ]
-      dispatch(batchActions(_actions))
-      return true
+      const modMsg = 'Hope you enjoyed this little game. Thanks for playing!'
+
+      dispatch(openModal(modTitle, modMsg))
+      return false
     }
 
     if (foeNewLife <= 0) {
@@ -255,8 +257,8 @@ function makeNewMap (level, screen) {
   const map = mapGenerator(settings)
   const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
   console.log(playerPos, screen)
-  const offsetX = ((playerPos.x + 1) * cellDim) - (screen.dim.x / 2)
-  const offsetY = ((playerPos.y + 1) * cellDim) - (screen.dim.y / 2)
+  const offsetX = ((playerPos.x + 0.5) * cellDim) + 1 - (screen.dim.x / 2)
+  const offsetY = ((playerPos.y + 0.5) * cellDim) + 1 - (screen.dim.y / 2)
   window.scroll(offsetX, offsetY)
   return {map, playerPos, offset: {x: offsetX, y: offsetY}}
 }
