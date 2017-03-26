@@ -1,26 +1,22 @@
 import React from 'react'
-import {Route, Router, IndexRoute, browserHistory} from 'react-router'
+import {Route, Router, IndexRoute, Redirect, browserHistory} from 'react-router'
 
 import App from 'App'
 import Home from 'Home'
-import Page2 from 'Page2'
+import About from 'About'
 import Dungeon from 'Dungeon'
 import NotFoundPage from 'NotFoundPage'
-// import {Home, Page2, Page3, NotFoundPage} from '../components/';
 
 export default function Routes () {
   return (
     <Router history={browserHistory}>
-      {/* 'App' acts as a wrapper for the child components */}
-      <Route path="/game" component={Dungeon} />
+      <Route path="game" component={Dungeon}/>
       <Route path="/" component={App}>
-        {/* IndexRoute is the initial component that is loaded,
-          other routes are loaded according to the component
-        property specified here */}
-        <IndexRoute component={Home} />
-        <Route path="page2" component={Page2} />
-        <Route path="*" component={NotFoundPage} />
+        <IndexRoute component={Home}/>
+        <Route path="about" component={About}/>
+        <Route path="404" component={NotFoundPage}/>
       </Route>
+      <Redirect from="*" to="404" />
     </Router>
   )
 }

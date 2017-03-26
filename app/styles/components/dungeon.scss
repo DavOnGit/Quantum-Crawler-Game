@@ -1,16 +1,33 @@
 
 .dungeon, .dungeon::before, .dungeon::after {
-  margin: 0 !important;
-  padding: 0 !important;
   box-sizing: content-box;
 }
 
 .dungeon {
+  position: relative;
   display: flex;
   flex-direction: column;
-  // height: 1600px;
-  // width: 600px;
   border: 1px solid $smort-blue;
+}
+
+.darkness {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  mix-blend-mode: multiply;
+  cursor: pointer;
+  overflow: hidden;
+  
+  .see-through {
+    position: relative;
+    border-radius: 50%;
+    box-shadow: inset 0 0 50px #000;
+    background-color: #000;
+    animation: reveal_pos 3s ease-out 1s 1 forwards;
+  }
 }
 
 .info-bar {
@@ -20,30 +37,33 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
   
   .container {
+    flex: 0 1 auto;
     background-color: $main-bg-color;
-    width: rem-calc(400);
+    //width: rem-calc(400);
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     border-bottom: 1px solid $accent-blue;
     border-left: 1px solid $accent-blue;
     border-right: 1px solid $accent-blue;
   }
   
   .tab {
-    padding: rem-calc(0 10);
+    flex: 1 1 10%;
+    //width: 14%;
+    //max-width: 90px;
+    padding: rem-calc(0 14);
     text-align: center;
     p {
       line-height: 1;
       margin: 8px 0;
       color: #777;
     }
-    a {
-      //color: $smort-yellow;
-    }
   }
+  
   .icon {
     vertical-align: middle;
     padding: rem-calc(0 5);
@@ -68,5 +88,18 @@
     &.lvl-door {
       fill: $deep-gray;
     }
+  }
+}
+
+.reveal-overlay {
+  overflow: hidden;
+}
+
+@keyframes reveal_pos {
+  from {
+    background-color: #000;
+  }
+  to {
+    background-color: #FFF;
   }
 }

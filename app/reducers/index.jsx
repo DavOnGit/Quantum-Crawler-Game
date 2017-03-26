@@ -1,9 +1,10 @@
 /* RouteReducer captures routes as state */
 import { combineReducers } from 'redux'
 import { routeReducer } from 'react-router-redux'
-import undoable from 'redux-undo'
+// import undoable from 'redux-undo'
 
-import {gameLvlReducer, mapReducer, playerReducer, darknessReducer, screenReducer, modalReducer} from './mapReducer'
+import { gameLvlReducer, mapReducer, playerReducer,
+  darknessReducer, screenReducer, modalReducer } from './mapReducer'
 
 const rootReducer = combineReducers({
   gameLvl: gameLvlReducer,
@@ -12,7 +13,7 @@ const rootReducer = combineReducers({
   darkness: darknessReducer,
   screen: screenReducer,
   modal: modalReducer,
-  routing: routeReducer // add routeReducer as a prop on state
+  routing: routeReducer
   // counter: undoable(counter, {limit: 50}),
 })
 

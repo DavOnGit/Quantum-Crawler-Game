@@ -13,7 +13,7 @@ const logger = createLogger({diff: true})
 
 const composeStore = compose(
   applyMiddleware(thunk, reduxRouterMiddleware),
-  DevTools.instrument()
+  window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
 )(createStore)
 
 export default (initialState = {}) => {
@@ -22,9 +22,8 @@ export default (initialState = {}) => {
 
   if (module.hot) {
     module.hot.accept('reducers', () =>
-      store.replaceReducer(require('reducers'))
+      store.replaceReducer(require('reducers').default)
     )
   }
-
   return store
 }

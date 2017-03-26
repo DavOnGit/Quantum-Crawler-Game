@@ -2,17 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'underscore'
 
-import { configureStore } from 'configureStore'
+import { default as configureStore } from 'configureStore'
 import mapGenerator from 'mapGen'
-import { PLAYER } from 'settings'
+import { cellDim, PLAYER } from 'settings'
+import 'applicationStyles'                      // Import styles
 
 const rootEl = document.getElementById('app')
 
 const map = mapGenerator()
 const playerPos = _.flatten(map).filter(el => el.type.name === 'player')[0].coords
 const windowDim = {x: window.innerWidth, y: window.innerHeight}
-const offsetX = ((playerPos.x + 1) * 20) - (windowDim.x / 2)
-const offsetY = ((playerPos.y + 1) * 20) - (windowDim.y / 2)
+const offsetX = ((playerPos.x + 0.5) * cellDim) + 1 - (windowDim.x / 2)
+const offsetY = ((playerPos.y + 0.5) * cellDim) + 1 - (windowDim.y / 2)
 
 const initialState = {
   gameLvl: 1,
@@ -21,7 +22,7 @@ const initialState = {
     ...PLAYER(),
     position: {...playerPos}
   },
-  darkness: false,
+  darkness: true,
   screen: {
     dim: windowDim,
     scroll: {x: offsetX, y: offsetY}
@@ -31,7 +32,7 @@ const store = configureStore(initialState)
 
 // hot reloading
 let render = () => {
-  const Root = require('Root').default
+  const Root = require('Root')
   ReactDOM.render(
     <Root store={ store } />,
     rootEl
@@ -52,12 +53,12 @@ if (module.hot) {
     try {
       renderApp()
     } catch (error) {
-      renderError()
+      renderError(error)
     }
   }
   module.hot.accept('Root', () => {
-    setTimeout(render)
+    render()
   })
 }
-
+console.log('No HMR')
 render()

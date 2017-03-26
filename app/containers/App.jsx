@@ -1,24 +1,24 @@
 import React, { PropTypes } from 'react'
 import { IndexLink } from 'react-router'
+
 import Footer from 'Footer'
+import Icon from 'Icon'
 
 const App = (props) => (
   <div className="main-app-container">
     <div className="main-app-nav">
-      <div id="main-app-title">Dungeon Crawler</div>
+      <div className="main-app-title">
+        <h1>Dunge<span><Icon icon='player' viewBox='0 0 1024 1024'/></span>n Crawler</h1>
+      </div>
       <div>
-        <span><IndexLink to="/" activeClassName="active" tabIndex='1'>Home</IndexLink></span>
-        <span><IndexLink to="/page2" activeClassName="active" tabIndex='2'>Page2</IndexLink></span>
-        <span><IndexLink to="/game" activeClassName="active" tabIndex='3'>Game</IndexLink></span>
+        <h5>
+          <span><IndexLink to="/" activeClassName="active">Home</IndexLink></span>
+          <span><IndexLink to="/about" activeClassName="active">About</IndexLink></span>
+        </h5>
       </div>
     </div>
-    <div>
+    <div className='view-container'>
       {props.children}
-      {/* {React.Children.map(props.children, (child) =>   // This is for clone each element with new props:
-          React.cloneElement(child, {
-            doSomething: this.doSomething
-          })
-      )} */}
     </div>
     <Footer />
   </div>

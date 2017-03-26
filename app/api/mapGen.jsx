@@ -6,7 +6,7 @@ import {mapSettings, WALL, FLOOR, DOOR, FOE, HEART, WEAPON, BOSS, LVL_DOOR, ITEM
 // This exports the dungeon Map array
 export default (settings = mapSettings) => {
   const {level, finalLvl, width, height, rooms, minRsize, maxRsize, gap} = settings
-  let makeRoomCounter = 0
+  // let makeRoomCounter = 0      // NOTE: uncomment to debug
 
   const arr2D = _.range(height).map((row, j) => _.range(width).map((el, i) => {
     return {
@@ -34,7 +34,7 @@ export default (settings = mapSettings) => {
     const randBoss = random(weaponLess.length)
     const bossLoc = weaponLess[randBoss].coords
 
-    return _drawRect(mapWeapon, bossLoc, BOSS)  // place next Boss
+    return _drawRect(mapWeapon, bossLoc, BOSS)  // place Boss
   } else {
     const lvlDoor = random(weaponLess.length)
     const lvlDoorLoc = weaponLess[lvlDoor].coords
@@ -42,10 +42,10 @@ export default (settings = mapSettings) => {
     return _drawRect(mapWeapon, lvlDoorLoc, LVL_DOOR)      // place next level Door
   }
 
-  /* Recursively make new rooms and place objects */
+  /* Recursively make new rooms and place some FOE & HEART */
   function makeNewRoom (map) {
     let whileCounter = 0
-    makeRoomCounter += 1
+    // makeRoomCounter += 1    // NOTE: uncomment to debug
 
     while (true) {
       whileCounter += 1
@@ -57,35 +57,38 @@ export default (settings = mapSettings) => {
 
       const notOverlap = checkOverlap(map, loc, gap)  // check if it overlaps with other rooms
       if (notOverlap) {
-        const addDoor = _drawRect(map, wall, DOOR)        // place door
+        const mapWroom = _drawRect(map, loc, FLOOR)   // place room
 
-        const mapWroom = _drawRect(addDoor, loc, FLOOR)   // place room
+        const extend = (wall.dir === 'up' || wall.dir === 'down')
+        ? {x: wall.x, y: wall.y - 1, spanX: 1, spanY: 3, DOOR}
+        : {x: wall.x - 1, y: wall.y, spanX: 3, spanY: 1, DOOR}
 
-        const foeNum = ITEMS_N(level, 'FOE')      // down here we place all the enemies
-        const mapWfoeObj = foeNum ? _compose(drawItem, foeNum)({map: mapWroom, loc, type: FOE(level)})
-          : {map: mapWroom}
+        const mapWDoor = _drawRect(mapWroom, extend, DOOR)          // place door tiles
+
+        const foeNum = ITEMS_N(level, 'FOE')                        // place enemies
+        const mapWfoeObj = foeNum ? _compose(drawItem, foeNum)({map: mapWDoor, loc, type: FOE(level)})
+          : {map: mapWDoor}
         const mapWfoe = mapWfoeObj.map
 
-        const heartNum = ITEMS_N(level, 'HEART')  // down here we place all the hearts
+        const heartNum = ITEMS_N(level, 'HEART')                    // place hearts
         const mapWheart = heartNum ? _compose(drawItem, heartNum)({map: mapWfoe, loc, type: HEART(level)})
           : {map: mapWfoe}
 
         return mapWheart.map
       }
       if (whileCounter >= 1000) {     // skip after 1000 runs, room not placed
-        makeRoomCounter -= 1
-
-        console.log(
-          `{\n WARNING: too mutch recursion\n` +
-          `\tRooms expected: ${rooms} \n\tDrawed: ${makeRoomCounter}\n}`
-        )
+        // makeRoomCounter -= 1       // NOTE: uncomment to debug
+        // console.log(
+        //   `{\n WARNING: too mutch recursion\n` +
+        //   `\tRooms expected: ${rooms} \n\tDrawed: ${makeRoomCounter + 1}\n}`
+        // )
         return map
       }
     }
   }
 }
 
-// object placer
+// random placer
 function drawItem (map) {
   const mapArr = map.map
   const {x, y, spanX, spanY} = map.loc
@@ -99,8 +102,6 @@ function drawItem (map) {
   } while (mapArr[randY][randX].type.name !== 'floor')
 
   const newLoc = {x: randX, y: randY}
-
-  if (mapArr[randY][randX].type.name !== 'floor') console.log(`sovrascritto: ${mapArr[randY][randX].type.name} con ${map.type.name}`)
   const wItem = _drawRect(map.map, newLoc, map.type)
 
   return {...map, map: wItem}
@@ -111,7 +112,7 @@ function makeFirstRoom (arr2D, width, height, minRsize, maxRsize, gap) {
   const spanX = _.random(minRsize, maxRsize)
   const spanY = _.random(minRsize, maxRsize)
   const x = _.random(gap, width - spanX - gap)
-  const y = _.random(gap, height - spanY - gap)
+  const y = _.random(gap + 3, height - spanY - gap)
   const loc = {x, y, spanX, spanY}
 
   return {map: _drawRect(arr2D, loc, FLOOR), loc}
@@ -169,7 +170,7 @@ function setRoomCoord (tile, minRsize, maxRsize) {
 function checkDim (map, loc, gap) {
   const {x, y, spanX, spanY} = loc
   const roomDimOk =
-    (y < gap + 2) ? false : (y > map.length - 1 - gap) ? false
+    (y < gap + 4) ? false : (y > map.length - 1 - gap) ? false
   : (x < gap) ? false : (x > map[0].length - 1 - gap) ? false
   : (y + spanY > map.length - 1 - gap) ? false
   : !(x + spanX > map[0].length - 1 - gap)

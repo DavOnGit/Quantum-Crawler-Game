@@ -1,15 +1,17 @@
-import React from 'react';
-import { createDevTools } from 'redux-devtools';
-import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
+import React from 'react'
+import { createDevTools } from 'redux-devtools'
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
+import SliderMonitor from 'redux-slider-monitor'
 
-const DevTools = createDevTools(
+export default createDevTools(
   <DockMonitor toggleVisibilityKey="ctrl-d"
     changePositionKey="ctrl-q"
+    defaultPosition='left'
+    //defaultSize={0.12}
     defaultIsVisible={false}
-  >
-    <LogMonitor theme="tomorrow" />
+    changeMonitorKey="ctrl-m">
+    <LogMonitor theme="nicinabox"/>
+    <SliderMonitor keyboardEnabled />
   </DockMonitor>
-);
-
-export default DevTools;
+)

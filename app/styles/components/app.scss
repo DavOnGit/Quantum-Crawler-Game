@@ -1,47 +1,193 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:100,400);
 
-//html { height: 100%; overflow:auto; }
+h1,h2,h3,h4,h5,h6,p,span,ul,pre,a,button { font-family: 'Raleway', sans-serif; }
 
-body {//height: 100%;
+body {
   background-color: $main-bg-color;
   color: $accent-black;
   display: flex;
   justify-content: center;
-  font-family: 'Raleway', sans-serif;
-  font-size: rem-calc(14);
-  overflow: hidden;
+  font-size: 16px;
+  overflow: auto;
   
   &.no-justify {
     justify-content: flex-start;
+    overflow: hidden;
   }
+  
   &.align {
     align-items: center;
+    overflow: hidden;
   }
 }
 
 .main-app-container {
-  padding-top: 2em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 1.4em;
+}
+
+.main-app-title {
+  
+  h1 { margin-bottom: 0.25em }
+  
+  svg {
+    width: rem-calc(27.2);
+    fill: $accent-black;
+    vertical-align: middle;
+    margin: rem-calc(0 1.5);
+    animation: facemorph 10s infinite;
+  }
 }
 
 .main-app-nav {
-  font-size: 2em;
+  flex: 0 0 auto;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 1.4em;
 
   a {
     text-decoration: none;
     color: $accent-blue;
-    font-size: 1.2rem;
-    padding: 0 10px 5px 10px;
-    &:hover {
-      color: $smort-blue;
-    }
-    &.active {
-      border-bottom: 1px solid $accent-blue;
-    }
+    padding: 0 15.5px 2px 15.5px;
+    
+    &:hover { color: $smort-blue; }
+    
+    &.active { border-bottom: 1px solid $accent-blue; }
   }
 }
 
 .view-container {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
   
+  >div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  p { margin-bottom: 1.2em }
+  
+  ul {
+    margin: 0 0 0.8em 2rem;
+    
+    li {
+      margin-bottom: 1rem;
+      text-align: center;
+      
+      .list-item {
+        display: flex;
+        align-items: center;
+        
+        span { padding-left: .8rem;}
+      }
+    }
+  }
+  
+  .icon-container-home {
+    display: inline-block;
+    height: 2.4rem;
+    
+    svg { width: 2.4rem; }
+    
+    &.foe {
+      background-color: $accent-orange;
+      border-radius: 50%;
+    }
+    
+    &.heart {
+      background-color: $accent-green;
+    }
+    
+    &.player {
+      background-color: $deep-blue;
+      border-radius: 50%;
+    }
+    
+    &.weapon {
+      background-color: $smort-yellow;
+    }
+    
+    &.boss {
+      background-color: $rebecca;
+      border-radius: 50%;
+    }
+    
+    &.lvl-door {
+      background-color: $deep-gray;
+    }
+  }
+  
+  .icon-container-about {
+    @extend .icon-container-home;
+    height: 4rem;
+    
+    svg { width: 4rem; }
+  }
+  .button {
+    color: $accent-blue;
+    border: 2.5px solid $accent-blue;
+    font-weight: bold;
+    box-shadow: 0 1px 5px 0px #999;
+    animation: colormorph 20s infinite;
+    transition: border 0.5s ease;
+    &:hover {
+      border: 2px solid $accent-black;
+      transition: border 0.5s ease;
+    }
+    
+    h5 {
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+    
+    &:active { box-shadow: 0 0px 0px 0px #000; }
+  }
+}
+
+@keyframes facemorph {
+  0% {
+    border-radius: 50%;
+  }
+  40% {
+    border-radius: 50%;
+  }
+  50% {
+    border-radius: 0%;
+  }
+  90% {
+    border-radius: 0;
+  }
+  100% {
+    border-radius: 50%;
+  }
+}
+
+@keyframes colormorph {
+  0% {
+    color: $accent-blue;
+  }
+  50% {
+    color: #F00;
+  }
+  100% {
+    color: $accent-blue;
+  }
+}
+
+@media (max-width: 639px) {
+  
+  body { font-size: 13px; }
+  
+  .main-app-title {
+    
+    & h1 { font-size: rem-calc(34); }
+    
+    & svg { width: rem-calc(20.5); }
+  }
+  
+  .info-bar .container .tab { padding: rem-calc(0 10) }
 }

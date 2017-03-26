@@ -1,27 +1,45 @@
-var path = require('path');
-var webpack = require('webpack');
-var express = require('express');
-var config = require('./webpack.config');
+const path = require('path')
+const webpack = require('webpack')
+const express = require('express')
+const config = require('./webpack.config')
+const compression = require('compression')
 
 // Create our app
-var app = express()
-var compiler = webpack(config);
+const app = express()
+const compiler = webpack(config)
+const ENV = process.env.NODE_ENV
+//const HOST = process.env.HOST || 'localhost'
 const PORT = process.env.PORT || 3000
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  publicPath: config.output.publicPath
-}));
+if (ENV !== 'production') {
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath,
+    stats: {
+      colors: true
+    },
+    historyApiFallback: true
+  }))
 
-app.use(require('webpack-hot-middleware')(compiler));
+  app.use(require('webpack-hot-middleware')(compiler))
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+  })
+} else {
+  app.use(compression())
 
-app.listen(PORT, 'localhost', function(err){
+  app.use(express.static(path.join(__dirname, 'public')))
+
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+  })
+}
+
+app.listen(PORT, (err) => {
   if (err) {
     console.log(err)
     return
   };
-  console.log('Express server running at localhost:' + PORT)
+  console.log('Express server running on port', PORT)
 })

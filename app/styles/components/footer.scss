@@ -1,18 +1,16 @@
 footer {
-  font-size: 0.75rem;
+  flex: 0 0 auto;
+  font-size: 0.75em;
   text-align: center;
-  padding-top: 4rem;
 
   a {
     text-decoration: none;
     color: inherit;
+    
+    p { margin-bottom: 0; }
 
     &:hover {
       color: $accent-blue;
     }
-  }
-
-  #heart{
-    color: $accent-red;
   }
 }

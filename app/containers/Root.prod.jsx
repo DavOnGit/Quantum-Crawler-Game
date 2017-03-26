@@ -1,20 +1,20 @@
 //# sourceURL=source.Rootprod
-import React, { PropTypes } from 'react';
-import { Provider } from 'react-redux';
+import React, { PropTypes } from 'react'
+import { Provider } from 'react-redux'
 
 import Router from 'app/router/'
 
-require('style!css!sass!applicationStyles')
+// require('style!css!sass!applicationStyles')
 
-const App = (props) => (
+const Root = (props) => (
   <Provider store={props.store}>
-    <Router history={props.history} />
+    <Router />
   </Provider>
-);
+)
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
-};
+}
 
-export default App;
+export default Root

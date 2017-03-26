@@ -1,16 +1,18 @@
-import {random} from 'helpers'
+import { random } from 'helpers'
 
 /* Map Geenerator */
 export const mapSettings = {
   level: 1,
   finalLvl: 4,
-  width: 100,      // Map dimensions
-  height: 100,
-  rooms: 8,
-  minRsize: 6,   // Room dimensions
-  maxRsize: 20,
-  gap: 1        // Used as spacer, margin
+  width: 60,       // Map col number
+  height: 60,      // Map row number
+  rooms: 12,
+  minRsize: 6,   // Room dimensions in cellSize
+  maxRsize: 16,
+  gap: 1        // Used as spacer, margin, in cellSize
 }
+
+export const cellDim = 30
 
 export const WALL = {
   name: 'wall',
@@ -40,7 +42,7 @@ export const PLAYER = (playerLevel = 1, weapon = 'fists') => {
     wName: weapon,
     maxLife: 70 + (playerLevel * 30),
     life: 100,
-    dmg: playerLevel + 10,
+    dmg: 10,
     exp: 0,
     nextLvl: 70 + (playerLevel * 30)
   }
@@ -50,7 +52,7 @@ export const HEART = (gameLevel) => {
     name: 'heart',
     life: 0,
     lvl: gameLevel,
-    heal: 40 + (gameLevel * 10),
+    heal: 30 + (gameLevel * 10),
     drop: 'heal'
   }
 }
@@ -58,7 +60,7 @@ export const FOE = (gameLevel) => {
   return {
     name: 'foe',
     lvl: gameLevel,
-    life: 20 + (30 * gameLevel),
+    life: 20 + (40 * gameLevel),
     dmg: 15 * gameLevel,
     exp: gameLevel * 10
   }

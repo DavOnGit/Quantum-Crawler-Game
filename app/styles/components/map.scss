@@ -1,14 +1,10 @@
 
-
 .map-row {
   display: flex;
-  flex: 0 0 20px;
 }
 
 .map-tile {
-  flex: 0 0 20px;
-  //width: 10px;
-  height: 20px;
+  line-height: 0;
   background-color: $main-bg-color;
   
   &.wall {
@@ -18,39 +14,9 @@
   &.floor {
     background-color: $main-bg-color;
   }
-  
-  // &.door {
-  //   background-color: $main-bg-color;
-  // }
-  //
-  // &.foe {
-  //   background-color: $accent-orange;
-  // }
-  //
-  // &.heart {
-  //   background-color: $accent-green;
-  // }
-  //
-  // &.player {
-  //   background-color: $deep-blue;
-  // }
-  //
-  // &.weapon {
-  //   background-color: $smort-yellow;
-  // }
-  //
-  // &.boss {
-  //   background-color: $rebecca;
-  // }
-  //
-  // &.lvl-door {
-  //   background-color: $deep-gray;
-  //}
 }
+
 .map-tile-inner {
-  width: 20px;
-  height: 20px;
-  
   &.wall {
     background-color: $accent-blue;
   }
