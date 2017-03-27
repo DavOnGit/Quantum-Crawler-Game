@@ -29,9 +29,9 @@ class Display extends React.Component {
             <p><Icon icon='life' width={elDim} viewBox='0 0 1024 1024'/></p>
             <p>{this.props.player.life}/{this.props.player.maxLife}</p>
           </div>
-          <div className='tab' title='Experience'>
+          <div className='tab' title='Exp to next lvl'>
             <p><Icon icon='experience' width={elDim} viewBox='0 0 1024 1024'/></p>
-            <p>{this.props.player.exp}</p>
+            <p>{this.props.player.nextLvl}</p>
           </div>
           <div className='tab' title='Weapon'>
             <p><Icon icon='weapon' width={elDim} viewBox='0 0 1024 1024'/></p>

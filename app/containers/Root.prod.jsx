@@ -1,14 +1,15 @@
-//# sourceURL=source.Rootprod
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
+import { Notifs } from 'redux-notifications'
 
 import Router from 'app/router/'
 
-// require('style!css!sass!applicationStyles')
-
 const Root = (props) => (
   <Provider store={props.store}>
-    <Router />
+    <div>
+      <Router />
+      <Notifs/>
+    </div>
   </Provider>
 )
 

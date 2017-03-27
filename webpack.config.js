@@ -71,7 +71,10 @@ module.exports = {
       { // JavaScript / ES6
         test: /\.jsx?$/,
         loaders: ['babel'],
-        exclude: /(node_modules|bower_components)/
+        include: [
+          path.resolve(__dirname, 'app')
+          // path.resolve(__dirname, 'node_modules/react-redux-notification')
+        ]
       },
       { // Css
         test: /\.css$/,

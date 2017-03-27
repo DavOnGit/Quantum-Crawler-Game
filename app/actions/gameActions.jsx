@@ -1,5 +1,7 @@
 import _ from 'underscore'
 import {batchActions} from 'redux-batched-actions'
+import { reducer as notifReducer, actions as notifActions, Notifs } from 'redux-notifications'
+const { notifSend, notifClear } = notifActions
 
 import mapGenerator from 'mapGen'
 import { mapSettings, cellDim, PLAYER } from 'settings'
@@ -188,15 +190,29 @@ function checkMove (gameLvl, map, player, dest, screen, dispatch) {
 
   if (cellName === 'floor' || cellName === 'door') return true
   if (cellName === 'heart') {
-    const healSum = map[y][x].type.heal + player.life
-    const heal = healSum >= player.maxLife ? player.maxLife : healSum
+    const data = map[y][x].type.heal
+    const playerLife = data + player.life
+    const heal = playerLife >= player.maxLife ? player.maxLife : playerLife
     dispatch(setPlayerLife(heal))
+    dispatch(notifClear())
+    dispatch(notifSend({
+      message: `You found ${data} life`,
+      kind: 'info',
+      dismissAfter: 5000
+    }))
     return true
   }
   if (cellName === 'weapon') {
     const wName = map[y][x].type.wName
-    const dmg = map[y][x].type.dmg + player.dmg
-    dispatch(getWeapon(wName, dmg))
+    const dmg = map[y][x].type.dmg
+    const addToPlayer = dmg + player.dmg
+    dispatch(getWeapon(wName, addToPlayer))
+    dispatch(notifClear())
+    dispatch(notifSend({
+      message: `New weapon: ${wName} - dmg ${dmg}`,
+      kind: 'info',
+      dismissAfter: 5000
+    }))
     return true
   }
   if (cellName === 'lvl-door') {
@@ -224,7 +240,8 @@ function checkMove (gameLvl, map, player, dest, screen, dispatch) {
       return false
     }
 
-    const foeNewLife = foeLife - _.random(player.dmg * 0.5, player.dmg * 1.5)
+    const foeNewLife = foeLife - ~~_.random(player.dmg * 0.5, player.dmg * 1.5)
+
     if (cellName === 'boss' && foeNewLife <= 0) {
       const modTitle = 'A winner is You!'
       const modMsg = 'Hope you enjoyed this little game. Thanks for playing!'
@@ -237,7 +254,18 @@ function checkMove (gameLvl, map, player, dest, screen, dispatch) {
       const exp = map[y][x].type.exp
       const toNextLvl = player.nextLvl - exp
 
-      if (toNextLvl > 0) return dispatch(setPlayerExp(toNextLvl, player.exp + exp))
+      dispatch(notifClear())
+      dispatch(notifSend({
+        message: 'You got it!',
+        kind: 'success',
+        dismissAfter: 3000
+      }))
+      if (toNextLvl > 0) {
+        return dispatch(batchActions([
+          setPlayerLife(playerLife),
+          setPlayerExp(toNextLvl, player.exp + exp)
+        ]))
+      }
 
       const maxLife = ((player.lvl + 1) * 30) + 70
       const maxExp = ((player.lvl + 1) * 20) + 80
@@ -246,7 +274,16 @@ function checkMove (gameLvl, map, player, dest, screen, dispatch) {
 
       return true
     }
-    dispatch(batchActions([setPlayerLife(playerLife), setFoe({...map[y][x].type, life: foeNewLife}, {x, y})]))
+    dispatch(batchActions([
+      setPlayerLife(playerLife),
+      setFoe({...map[y][x].type, life: foeNewLife}, {x, y})
+    ]))
+    dispatch(notifClear())
+    dispatch(notifSend({
+      message: `Foe lvl ${gameLvl} - life ${foeNewLife} - dmg ${foeDmg}`,
+      kind: 'warning',
+      dismissAfter: 5000
+    }))
     return false
   }
   return false
