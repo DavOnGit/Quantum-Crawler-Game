@@ -60,5 +60,4 @@ if (module.hot) {
     render()
   })
 }
-console.log('No HMR')
 render()

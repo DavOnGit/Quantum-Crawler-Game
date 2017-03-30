@@ -135,5 +135,5 @@ module.exports = {
     })
   ]
   : console.error('webpack plugins error: env is ' + ENV),
-  devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'cheap-module-eval-source-map'
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map'
 }

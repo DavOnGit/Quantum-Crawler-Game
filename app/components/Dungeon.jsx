@@ -26,17 +26,17 @@ class Dungeon extends React.Component {
     const game = this.props.game
     const pos = this.props.player.position
 
-    switch (e.key) {
-      case 'ArrowLeft':console.log('left')
+    switch (e.keyCode || e.which) {
+      case 37:
         game.preMove({...pos, x: pos.x - 1}, 'left')
         break
-      case 'ArrowUp':console.log('up')
+      case 38:
         game.preMove({...pos, y: pos.y - 1}, 'up')
         break
-      case 'ArrowRight':console.log('right')
+      case 39:
         game.preMove({...pos, x: pos.x + 1}, 'right')
         break
-      case 'ArrowDown':console.log('down')
+      case 40:
         game.preMove({...pos, y: pos.y + 1}, 'down')
         break
     }
