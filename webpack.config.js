@@ -111,6 +111,7 @@ module.exports = {
   plugins: ENV === 'development' ? [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.NamedModulesPlugin(),
     new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'}),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -120,10 +121,11 @@ module.exports = {
   ]
   : ENV === 'production' ? [
     new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.NamedModulesPlugin(),
+    new webpack.NoErrorsPlugin(),
     new webpack.ProvidePlugin({'$': 'jquery', 'jQuery': 'jquery', '_': 'underscore'}),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new ExtractTextPlugin('styles/bundle.css', {allChunks: true}),
+    new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {warnings: false, drop_console: true, drop_debugger: true},
       output: {ascii_only: true, comments: false}
@@ -132,7 +134,8 @@ module.exports = {
       name: 'vendor',
       filename: 'js/vendor.bundle.js',
       minChunks: Infinity
-    })
+    }),
+    new ExtractTextPlugin('styles/bundle.css', {allChunks: true})
   ]
   : console.error('webpack plugins error: env is ' + ENV),
   devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map'
